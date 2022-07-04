@@ -1,0 +1,11 @@
+# Dependency directory
+node_modules
+
+#GENERAL ELEMENTS
+objects
+
+# API keys and secrets
+.env
+
+# ignore yarn.lock
+yarn.lock
