@@ -1,4 +1,4 @@
-import { Client, Intents } from 'discord.js';
+import { Channel, Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -47,7 +47,26 @@ export default class App {
         || !message.content.startsWith(this.BOT_PREFIX)
         || message.content.startsWith(`<@!${this.client.user!.id}`)
         || message.content.startsWith(`<@${this.client.user!.id}`)
-        ) return        
+        ) return;
+
+      const args = message.content.slice(this.BOT_PREFIX.length).trim().split(/ +/g);
+
+      if (!args) {
+        message.channel.send('Erro: Comando não Identificado!');
+        return;
+      }
+
+      const command = args.shift()!.toLowerCase();
+
+      try {
+        const commandFile = require(`./commands/${command}.ts`);
+        delete require.cache[require.resolve(`./commands/${command}.ts`)];
+        commandFile.run(this.client, message, args);
+
+      } catch (err) {
+        message.channel.send('Erro: Comando Não Encontrado!');
+        // console.error(`Erro ao Digitar o Comando: '${command}' \n[DEPURAÇÃO] Erro Retornado: '${err}'`); [DEBUG]
+      }
     });
   }
 }
