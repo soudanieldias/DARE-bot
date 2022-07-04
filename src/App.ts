@@ -12,6 +12,7 @@ export default class App {
 
   constructor () {
     this.setActivity();
+    this.commandHandler();
   }
 
   public start () { // Configurações de Inicialização & Autenticação do BOT
@@ -33,8 +34,20 @@ export default class App {
     this.client.once('ready', () => {
       this.client.user?.setActivity(
         'BOT Online',
-        { type: 'STREAMING', url: 'https://www.diasitservices.com.br/dare-bot'}
+        { type: 'STREAMING', url: 'https://www.diasitservices.com.br/dare-bot' }
       );
+    });
+  }
+
+  private commandHandler () {
+    this.client.on('messageCreate', async (message) => {
+      if ( 
+        message.author.bot
+        || message.channel.type === 'DM'
+        || !message.content.startsWith(this.BOT_PREFIX)
+        || message.content.startsWith(`<@!${this.client.user!.id}`)
+        || message.content.startsWith(`<@${this.client.user!.id}`)
+        ) return        
     });
   }
 }
