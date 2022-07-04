@@ -1,18 +1,27 @@
-import { Channel, Client, Intents } from 'discord.js';
+import { Channel, Client, Intents, Message, TextChannel } from 'discord.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 export default class App {
-  private client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
+  private client = new Client({ intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MEMBERS
+  ] });
 
   private BOT_PREFIX = process.env.BOT_PREFIX || '//';
 
   private TOKEN = process.env.BOT_TOKEN;
 
+  private WELCOME_CHANNEL = process.env.WELCOME_CHANNEL;
+
+  private WELCOME_MESSAGE = process.env.WELCOME_MESSAGE;
+
   constructor () {
     this.setActivity();
     this.commandHandler();
+    this.joinHandler();
   }
 
   public start () { // Configurações de Inicialização & Autenticação do BOT
@@ -66,6 +75,19 @@ export default class App {
       } catch (err) {
         message.channel.send('Erro: Comando Não Encontrado!');
         // console.error(`Erro ao Digitar o Comando: '${command}' \n[DEPURAÇÃO] Erro Retornado: '${err}'`); [DEBUG]
+      }
+    });
+  }
+
+  private joinHandler () {
+    this.client.on('guildMemberAdd', async (user) => {
+      if (this.WELCOME_CHANNEL && this.WELCOME_MESSAGE) {
+        try {
+          const channel = this.client.channels.cache.get(this.WELCOME_CHANNEL);
+          (channel as TextChannel).send(`${this.WELCOME_MESSAGE}, <@${user.id}>`);
+        } catch (err) {
+          console.error(err);
+        }
       }
     });
   }
