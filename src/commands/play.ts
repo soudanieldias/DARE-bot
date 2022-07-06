@@ -24,17 +24,15 @@ module.exports.run = async (client:Client, message:Message, args:Array<string>) 
   const guildId = message.guildId;
   const adapterCreator = message.guild?.voiceAdapterCreator;
 
-  const fileObjects = await generateButtonsData()
-  // console.log(fileObjects);
-
-  // const slicedResult = await sliceArray(fileObjects, 5);
-  // console.log(slicedResult);
+  const fileObjects = await generateButtonsData();
 
   if (!userChannel) {
-    message.reply('You must be in a voice Channel first to perform this command.')
+    message.channel
+      .send({ content: 'You must be in a voice Channel first to perform this command.' });
+    return;
   }
 
-  if (!args[0]) {
+  if (!args[0] && userChannel) {
     const slicedResult = await sliceArray(fileObjects, 5);
     const allRows:Array<MessageActionRow> = [];
 
@@ -47,27 +45,25 @@ module.exports.run = async (client:Client, message:Message, args:Array<string>) 
     });
   }
 
-  const player = createAudioPlayer();
+  if (userChannel) {
+    const player = createAudioPlayer();
+    const resource = createAudioResource(`./src/audios/${args[0]}`);
+    player.play(resource);
+    const connection = joinVoiceChannel({
+      channelId: `${userChannel}`,
+      guildId: guildId!,
+      adapterCreator: adapterCreator!,
+      });
+  
+    const subscription = connection.subscribe(player);
 
-  // player.on(AudioPlayerStatus.Playing, () => {
-  //   console.log('The audio file is being Played');
-  //   console.log(args[0]);
-  // });
-
-  // player.on('error', (error) => {
-  //   console.error(`Error: ${error.message} with resource`);
-  // });
-
-  const resource = createAudioResource(`./src/audios/${args[0]}`);
-
-  player.play(resource);
-
-  const connection = joinVoiceChannel({
-    channelId: `${userChannel}`,
-    guildId: guildId!,
-    adapterCreator: adapterCreator!,
+    player.on(AudioPlayerStatus.Playing, () => {
+      console.log(`Playing: ${args[0]}`);
+      console.log(args[0]);
     });
-
-  const subscription = connection.subscribe(player);
-
+  
+    player.on('error', (error) => {
+      console.error(`Error: ${error.message} with resource`);
+    });
+  }
 };
