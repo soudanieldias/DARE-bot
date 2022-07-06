@@ -2,13 +2,13 @@ import { Client, Message, MessageActionRow, MessageButton, TextChannel } from "d
 import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus } from '@discordjs/voice';
 import fs from 'fs/promises';
 
-// function sliceArray(fileObjects:Array<MessageButton>, max:number) {
-//   return fileObjects.reduce((acc:any, item, index:number) => {
-//     const group = Math.floor(index / max);
-//     acc[group] = [...(acc[group] || []), item];
-//     return acc;
-//   }, []);
-// }
+function sliceArray(fileObjects:Array<MessageButton>, max:number) {
+  return fileObjects.reduce((acc:any, item, index:number) => {
+    const group = Math.floor(index / max);
+    acc[group] = [...(acc[group] || []), item];
+    return acc;
+  }, []);
+}
 
 async function generateButtonsData() {
   const audioFiles = await fs.readdir('./src/audios/');
@@ -35,10 +35,13 @@ module.exports.run = async (client:Client, message:Message, args:Array<string>) 
   }
 
   if (!args[0]) {
-    const row = new MessageActionRow().addComponents(...fileObjects.slice(0,5));
-    const row2 = new MessageActionRow().addComponents(...fileObjects.slice(5,10));
-    const row3 = new MessageActionRow().addComponents(...fileObjects.slice(11,15));
-    const row4 = new MessageActionRow().addComponents(...fileObjects.slice(16,20));
+    const slicedResult = await sliceArray(fileObjects, 5);
+  
+    const row = new MessageActionRow().addComponents(...slicedResult[0]);
+    const row2 = new MessageActionRow().addComponents(...slicedResult[1]);
+    const row3 = new MessageActionRow().addComponents(...slicedResult[2]);
+    const row4 = new MessageActionRow().addComponents(...slicedResult[3]);
+
     const allRows = [row, row2, row3, row4];
 
     return allRows.forEach((rowData:MessageActionRow) => {
