@@ -7,7 +7,8 @@ export default class App {
   private client = new Client({ intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MEMBERS
+    Intents.FLAGS.GUILD_MEMBERS,
+    Intents.FLAGS.GUILD_VOICE_STATES,
   ] });
 
   private BOT_PREFIX = process.env.BOT_PREFIX || '//';
@@ -22,6 +23,7 @@ export default class App {
     this.setActivity();
     this.commandHandler();
     this.joinHandler();
+    this.interactionHandler();
   }
 
   public start () { // Configurações de Inicialização & Autenticação do BOT
@@ -90,5 +92,21 @@ export default class App {
         }
       }
     });
+  }
+
+  private interactionHandler() {
+    this.client.on('interaction', (interaction) => {
+      if (!interaction.isButton()) return;
+
+      try {
+        const commandFile = require(`./commands/play.ts`);
+        delete require.cache[require.resolve(`./commands/play.ts`)];
+        commandFile.run(this.client, interaction, [interaction.customId]);
+        interaction.reply({ content: `Tocando: ${interaction.customId}`, ephemeral: false });
+        interaction.deleteReply();
+      } catch (err) {
+        console.error(err);
+      }
+    })
   }
 }
