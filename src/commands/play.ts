@@ -42,8 +42,8 @@ module.exports.run = async (client:Client, message:Message, args:Array<string>) 
       .forEach((result:Array<MessageActionRow>) => (allRows
         .push(new MessageActionRow().addComponents(result))));
 
-    return allRows.forEach((rowData:MessageActionRow) => {
-      (messageChannel as TextChannel).send({ content: 'Lista de Áudios:', components: [rowData] });
+    return allRows.forEach((rowData:MessageActionRow, index) => {
+      (messageChannel as TextChannel).send({ content: `Lista de Áudios: ${index + 1}`, components: [rowData] });
     });
   }
 
