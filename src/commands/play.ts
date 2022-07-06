@@ -36,13 +36,11 @@ module.exports.run = async (client:Client, message:Message, args:Array<string>) 
 
   if (!args[0]) {
     const slicedResult = await sliceArray(fileObjects, 5);
-  
-    const row = new MessageActionRow().addComponents(...slicedResult[0]);
-    const row2 = new MessageActionRow().addComponents(...slicedResult[1]);
-    const row3 = new MessageActionRow().addComponents(...slicedResult[2]);
-    const row4 = new MessageActionRow().addComponents(...slicedResult[3]);
+    const allRows:Array<MessageActionRow> = [];
 
-    const allRows = [row, row2, row3, row4];
+    slicedResult
+      .forEach((result:Array<MessageActionRow>) => (allRows
+        .push(new MessageActionRow().addComponents(result))));
 
     return allRows.forEach((rowData:MessageActionRow) => {
       (messageChannel as TextChannel).send({ content: 'Lista de Áudios:', components: [rowData] });
