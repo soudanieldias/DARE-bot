@@ -24,6 +24,7 @@ export default class App {
     this.commandHandler();
     this.joinHandler();
     this.interactionHandler();
+    this.voiceHandler();
   }
 
   public start () { // Configurações de Inicialização & Autenticação do BOT
@@ -108,5 +109,19 @@ export default class App {
         console.error(err);
       }
     })
+  }
+
+  private voiceHandler() {
+    this.client.on('voiceStateUpdate', async (oldMember, newMember) => {
+      const newUserChannel = newMember.channel
+      const oldUserChannel = oldMember.channel
+
+      if(oldUserChannel === undefined && newUserChannel !== undefined) {
+        console.log('User Joined a Channel');
+
+      } else if(newUserChannel === undefined) {
+        console.log('User Left Channel');
+      }
+    });
   }
 }
