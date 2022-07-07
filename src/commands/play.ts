@@ -18,21 +18,20 @@ async function generateButtonsData() {
 }
 
 module.exports.run = async (client:Client, message:Message, args:Array<string>) => {
-  const userChannel = message.member?.voice.channelId;
-  // const voiceChannel = client.channels.cache.get(userChannel!);
+  const voiceChannel = message.member?.voice.channelId;
   const messageChannel = client.channels.cache.get(message.channelId);
   const guildId = message.guildId;
   const adapterCreator = message.guild?.voiceAdapterCreator;
 
   const fileObjects = await generateButtonsData();
 
-  if (!userChannel) {
+  if (!voiceChannel) {
     message.channel
       .send({ content: 'You must be in a voice Channel first to perform this command.' });
     return;
   }
 
-  if (!args[0] && userChannel) {
+  if (!args[0] && voiceChannel) {
     const slicedResult = await sliceArray(fileObjects, 5);
     const allRows:Array<MessageActionRow> = [];
 
@@ -45,25 +44,19 @@ module.exports.run = async (client:Client, message:Message, args:Array<string>) 
     });
   }
 
-  if (userChannel) {
+  if (voiceChannel) {
     const player = createAudioPlayer();
+
     const resource = createAudioResource(`./src/audios/${args[0]}`);
-    player.play(resource);
+
     const connection = joinVoiceChannel({
-      channelId: `${userChannel}`,
+      channelId: `${voiceChannel}`,
       guildId: guildId!,
       adapterCreator: adapterCreator!,
-      });
-  
-    const subscription = connection.subscribe(player);
+    });
+    
+    player.play(resource);
 
-    player.on(AudioPlayerStatus.Playing, () => {
-      console.log(`Playing: ${args[0]}`);
-      console.log(args[0]);
-    });
-  
-    player.on('error', (error) => {
-      console.error(`Error: ${error.message} with resource`);
-    });
+    connection.subscribe(player);
   }
 };
