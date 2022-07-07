@@ -19,6 +19,8 @@ export default class App {
 
   private WELCOME_MESSAGE = process.env.WELCOME_MESSAGE;
 
+  public static loopMusic:Boolean = false;
+
   constructor () {
     this.setActivity();
     this.commandHandler();
