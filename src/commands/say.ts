@@ -12,7 +12,10 @@ module.exports.run = async (client:Client, message:Message, args:Array<string> )
 
     if (!channel) message.reply('ERRO: Canal não encontrado!');
 
-    if (!authorizeSay) message.reply('ERRO: Não Autorizado!!!');
+    if (!authorizeSay) {
+      message.reply('ERRO: Não Autorizado!!!');
+      return;
+    }
 
     if (channel) {
       (channel as TextChannel).send(`${MESSAGE_TO_SEND}`);
