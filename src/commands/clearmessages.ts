@@ -1,25 +1,20 @@
-import { Client, Message, TextChannel } from "discord.js";
+import { Client, Interaction, Message, TextChannel } from "discord.js";
 
 module.exports.run = async (client:Client, message:Message, args:Array<string>) => {
   try {
-    const ADMS_ROLE_PREFIX = 'Diretoria de';
-    const userRoles = message.member?.roles.cache.map((role) => role.name );
-    const authorizeSay = userRoles?.some((role) => role.startsWith(ADMS_ROLE_PREFIX));
-    const CHANNEL_ID = args[0];
-    // const channel = client.channels.cache.find((channel) => channel.id === CHANNEL_ID);
-    const channel = message.channel;
+    const userPerms = message.member!.guild.me?.permissions.toArray();
+    const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
+    const MESSAGES_TO_DELETE = Number(args[0]);
 
-    if (!channel) message.reply('ERRO: Canal não encontrado!');
-
-    if (!authorizeSay) {
-      message.reply('ERRO: Não Autorizado!!!');
-      return;
-    }
+    if (!hasAdminRole) return message.reply('ERRO: Não Autorizado!!!');
     
-    if(Number(args[0]) <= 100) {
-      await message.channel.send({ content: `Limpando ${args[0]} mensagens do canal`});
-      await (message.channel as TextChannel).bulkDelete(Number(args[0]), true);
+    if(!MESSAGES_TO_DELETE || MESSAGES_TO_DELETE > 100 || MESSAGES_TO_DELETE < 1 ) {
+      message.delete();
+      return message.reply({ content: 'Quantidade de mensagens à apagar Inválida!' });
     }
+
+    await (message.channel as TextChannel).bulkDelete(MESSAGES_TO_DELETE, true);
+    await message.channel.send({ content: `Foram limpas ${MESSAGES_TO_DELETE} mensagens do canal`});
 
   } catch (error) {
     console.error(error);
