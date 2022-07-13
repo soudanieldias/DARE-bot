@@ -103,8 +103,8 @@ export default class App {
       if (!interaction.isButton()) return;
 
       try {
-        const commandFile = require(`./commands/play.ts`);
-        delete require.cache[require.resolve(`./commands/play.ts`)];
+        const commandFile = require(`./commands/soundpad.ts`);
+        delete require.cache[require.resolve(`./commands/soundpad.ts`)];
         commandFile.run(this.client, interaction, [interaction.customId]);
         interaction.reply({ content: `Tocando: ${interaction.customId}`, ephemeral: false });
         interaction.deleteReply();

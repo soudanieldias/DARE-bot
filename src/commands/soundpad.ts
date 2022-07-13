@@ -1,5 +1,5 @@
 import { Client, Message, MessageActionRow, MessageButton, TextChannel } from "discord.js";
-import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus } from '@discordjs/voice';
+import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
 import fs from 'fs/promises';
 
 function sliceArray(fileObjects:Array<MessageButton>, max:number) {
@@ -13,7 +13,7 @@ function sliceArray(fileObjects:Array<MessageButton>, max:number) {
 async function generateButtonsData() {
   const audioFiles = await fs.readdir('./src/audios/');
   const fileObjects = audioFiles
-    .map((audio) => ( new MessageButton().setCustomId(audio).setLabel(audio.slice(0, -4)).setStyle('PRIMARY')));
+    .map((audio) => ( new MessageButton().setCustomId(audio.slice(0, -4)).setLabel(audio.slice(0, -4)).setStyle('PRIMARY')));
   return fileObjects;
 }
 
@@ -47,7 +47,7 @@ module.exports.run = async (client:Client, message:Message, args:Array<string>) 
   if (voiceChannel) {
     const player = createAudioPlayer();
 
-    const resource = createAudioResource(`./src/audios/${args[0]}`);
+    const resource = createAudioResource(`./src/audios/${args[0]}.mp3`);
 
     const connection = joinVoiceChannel({
       channelId: `${voiceChannel}`,
