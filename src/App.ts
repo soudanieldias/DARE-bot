@@ -1,6 +1,5 @@
 import { Client, Intents, TextChannel } from 'discord.js';
-import mongoose from 'mongoose';
-import { DatabaseConnection, SetActivity } from './events';
+import { DatabaseConnection, SetActivity, Interactions } from './events';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -26,9 +25,9 @@ export default class App {
   constructor () {
     SetActivity.setActivity(this.client);
     DatabaseConnection.databaseHandler();
+    Interactions.buttonInteraction(this.client);
     this.commandHandler();
     this.joinHandler();
-    this.interactionHandler();
     this.voiceHandler();
   }
 
@@ -90,22 +89,6 @@ export default class App {
         }
       }
     });
-  }
-
-  private interactionHandler() {
-    this.client.on('interaction', (interaction) => {
-      if (!interaction.isButton()) return;
-
-      try {
-        const commandFile = require(`./commands/soundpad.ts`);
-        delete require.cache[require.resolve(`./commands/soundpad.ts`)];
-        commandFile.run(this.client, interaction, [interaction.customId]);
-        interaction.reply({ content: `Tocando: ${interaction.customId}`, ephemeral: false });
-        interaction.deleteReply();
-      } catch (err) {
-        console.error(err);
-      }
-    })
   }
 
   private voiceHandler() {
