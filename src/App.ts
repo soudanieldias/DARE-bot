@@ -1,4 +1,5 @@
 import { Client, Intents, TextChannel } from 'discord.js';
+import mongoose, { Collection } from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,6 +20,8 @@ export default class App {
 
   private WELCOME_MESSAGE = process.env.WELCOME_MESSAGE;
 
+  private MONGO_URI = process.env.MONGO_URI;
+
   public static loopMusic:Boolean = false;
 
   constructor () {
@@ -27,6 +30,7 @@ export default class App {
     this.joinHandler();
     this.interactionHandler();
     this.voiceHandler();
+    this.databaseHandler();
   }
 
   public start () { // Configurações de Inicialização & Autenticação do BOT
@@ -126,5 +130,13 @@ export default class App {
         console.log('User Left Channel');
       }
     });
+  }
+
+  private databaseHandler() {
+    try {
+      mongoose.connect(`${this.MONGO_URI}`, { keepAlive: true });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
