@@ -1,5 +1,6 @@
 import { Client, Intents, TextChannel } from 'discord.js';
-import mongoose, { Collection } from 'mongoose';
+import mongoose from 'mongoose';
+import { SetActivity } from './events';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -25,7 +26,7 @@ export default class App {
   public static loopMusic:Boolean = false;
 
   constructor () {
-    this.setActivity();
+    SetActivity.setActivity(this.client);
     this.commandHandler();
     this.joinHandler();
     this.interactionHandler();
@@ -47,15 +48,6 @@ export default class App {
     });
 
     this.client.login(this.TOKEN);
-  }
-
-  private setActivity () { // Configurações de Atividade/Status do BOT
-    this.client.once('ready', () => {
-      this.client.user?.setActivity(
-        'BOT Online',
-        { type: 'STREAMING', url: 'https://www.diasitservices.com.br/dare-bot' }
-      );
-    });
   }
 
   private commandHandler () {
