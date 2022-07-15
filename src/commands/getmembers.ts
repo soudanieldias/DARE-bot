@@ -7,7 +7,6 @@ module.exports.run = async (client:Client, message:Message) => {
 
     if(guild) {
       const guildMembers = ( await guild.members.fetch())
-        .map((member) => member)
         .sort((a:GuildMember, b:GuildMember) => {
           if (a.displayName! > b.displayName!) return 1;
           if (a.displayName! < b.displayName!) return -1;
