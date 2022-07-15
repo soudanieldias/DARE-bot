@@ -17,7 +17,7 @@ module.exports.run = async (client:Client, message:Message) => {
 
       const membersData = guildMembers
         .filter((member) => !member.user.bot)
-        .map((member) => ({ name: member.displayName + ':', value: `<@!${member.id}>` }))
+        .map((member) => ({ name: member.displayName + ':', value: `<@!${member.id}>` }));
 
       // const botsData = guildMembers
       //   .filter((member) => member.user.bot )

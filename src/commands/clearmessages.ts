@@ -1,6 +1,6 @@
 import { Client, Interaction, Message, TextChannel } from "discord.js";
 
-module.exports.run = async (client:Client, message:Message, args:Array<string>) => {
+module.exports.run = async (_client:Client, message:Message, args:Array<string>) => {
   try {
     const userPerms = message.member!.guild.me?.permissions.toArray();
     const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
@@ -18,6 +18,6 @@ module.exports.run = async (client:Client, message:Message, args:Array<string>) 
 
   } catch (error) {
     console.error(error);
-    message.reply({ content: `${error}` })
+    message.reply({ content: `${error}` });
   }
 };
