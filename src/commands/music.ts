@@ -22,7 +22,6 @@ module.exports = {
       if(validUrl) {
         stream = await ytdl(args[1], { filter: 'audioonly' });
       }
-  
       
       if (!voiceChannel) {
         message.reply({ content: 'Connect to a voice Channel first.' });
