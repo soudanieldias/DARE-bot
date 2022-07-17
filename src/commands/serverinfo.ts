@@ -1,7 +1,7 @@
 import { Client, Message, MessageEmbed } from "discord.js";
 
 module.exports = {
-	name: '',
+	name: 'serverinfo',
 	description: 'Shows a EMBED with Discord server info',
 	category: 'help',
 	run: async (client:Client, message:Message, _args:Array<string>) => {
