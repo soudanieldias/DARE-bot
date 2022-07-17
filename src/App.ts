@@ -1,5 +1,6 @@
-import { Client, Intents, TextChannel } from 'discord.js';
+import { Client, Collection, Intents, TextChannel } from 'discord.js';
 import { DatabaseConnection, SetActivity, Interactions } from './events';
+import { ICommand } from './interfaces';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,6 +22,8 @@ export default class App {
   private WELCOME_MESSAGE = process.env.WELCOME_MESSAGE;
 
   public static loopMusic:Boolean = false;
+  
+  public commands = new Collection<string, ICommand>();
 
   constructor () {
     SetActivity.setActivity(this.client);
