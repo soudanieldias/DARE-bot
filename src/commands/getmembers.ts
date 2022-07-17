@@ -1,4 +1,4 @@
-import { Client, Guild, GuildMember, Message, MessageEmbed } from "discord.js";
+import { Client, GuildMember, Message } from "discord.js";
 
 module.exports.run = async (client:Client, message:Message) => {
   try {
@@ -6,7 +6,7 @@ module.exports.run = async (client:Client, message:Message) => {
     const guild = client.guilds.resolve(message.guildId!);
 
     if(guild) {
-      const guildMembers = ( await guild.members.fetch())
+      const guildMembers = (await guild.members.fetch())
         .sort((a:GuildMember, b:GuildMember) => {
           if (a.displayName! > b.displayName!) return 1;
           if (a.displayName! < b.displayName!) return -1;
@@ -23,11 +23,10 @@ module.exports.run = async (client:Client, message:Message) => {
         fields: [ ...membersData ],
       };
 
-      message.channel.send({ embeds: [usersEmbed/*, botsEmbed*/] });
+      message.channel.send({ embeds: [usersEmbed] });
     }
   } catch (error) {
     console.error(error);
     message.channel.send({ content: 'Erro: Ocorreu um erro ao executar o Comando.'});
   }
-
 };
