@@ -5,7 +5,7 @@ module.exports = {
   name: 'generatereport',
   description: 'Generate a complete Data report of players & Bots in server',
   category: 'staff',
-  run: async (client:Client, message:Message) => {
+  execute: async (client:Client, message:Message) => {
     const userPerms = message.member!.guild.me?.permissions.toArray();
     const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
 

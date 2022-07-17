@@ -26,7 +26,7 @@ module.exports = {
 	name: 'randompic',
 	description: 'Gets a arandom Pic from List',
 	category: 'test',
-	run: async (client:Client, message:Message, _args:Array<string>) => {
+	execute: async (client:Client, message:Message, _args:Array<string>) => {
     try {
       getRandomPic(client, message);
     } catch (error) {

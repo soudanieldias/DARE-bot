@@ -4,7 +4,7 @@ module.exports = {
 	name: 'serverinfo',
 	description: 'Shows a EMBED with Discord server info',
 	category: 'help',
-	run: async (client:Client, message:Message, _args:Array<string>) => {
+	execute: async (client:Client, message:Message, _args:Array<string>) => {
     const guildMembers = await message.guild?.members.fetch();
     const membersCount = guildMembers!.filter((m) => !m.user.bot ).size;
     try {

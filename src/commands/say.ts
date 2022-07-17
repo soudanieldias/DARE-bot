@@ -4,7 +4,7 @@ module.exports = {
 	name: 'say',
 	description: 'Broadcast a message to specified channel',
 	category: 'staff',
-	run: async (client:Client, message:Message, args:Array<string>) => {
+	execute: async (client:Client, message:Message, args:Array<string>) => {
     try {
       const userPerms = message.member!.guild.me?.permissions.toArray();
       const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));

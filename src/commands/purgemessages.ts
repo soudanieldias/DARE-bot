@@ -4,7 +4,7 @@ module.exports = {
 	name: 'purgemessages',
 	description: 'Purges a \'n\' amount of sended messages from specified user',
 	category: 'staff',
-	run: async (_client:Client, message:Message, args:Array<string>) => {
+	execute: async (_client:Client, message:Message, args:Array<string>) => {
     try {
       const userPerms = message.member!.guild.me?.permissions.toArray();
       const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));

@@ -7,7 +7,7 @@ module.exports = {
 	name: 'music',
 	description: 'Music commands',
 	category: 'music',
-	run: async (client:Client, message:Message, args:Array<string>) => {
+	execute: async (client:Client, message:Message, args:Array<string>) => {
     try {
       const voiceChannel = message.member?.voice.channelId;
       const guildId = message.guildId;

@@ -4,9 +4,8 @@ module.exports = {
 	name: 'getmembers',
 	description: 'Get a list of members of server and returns in a embed',
 	category: 'staff',
-	run: async (client:Client, message:Message) => {
+	execute: async (client:Client, message:Message) => {
     try {
-
       const guild = client.guilds.resolve(message.guildId!);
   
       if(guild) {

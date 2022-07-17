@@ -4,7 +4,7 @@ module.exports = {
 	name: 'clearmessages',
 	description: 'Clear a \'n\' quantity of messages in specified channel',
 	category: 'staff',
-	run: async (client:Client, message:Message, args:Array<string>) => {
+	execute: async (client:Client, message:Message, args:Array<string>) => {
     try {
       const userPerms = message.member!.guild.me?.permissions.toArray();
       const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
