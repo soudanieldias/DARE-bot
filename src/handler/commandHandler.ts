@@ -1,5 +1,6 @@
 import { Client } from "discord.js";
 import glob from "glob";
+import App from "../App";
 
 export default class CommandHandler {
   public static async  loadCommands(client:Client) {
@@ -20,7 +21,8 @@ export default class CommandHandler {
   
         delete require.cache[require.resolve(`../../${file}`)];
   
-        client.application?.commands.set(command.name, command);
+        App.commands.set(command.name, command);
+        // client.application!.commands.set(command.name, command);
       }
     } catch (error) {
       console.error(error);
