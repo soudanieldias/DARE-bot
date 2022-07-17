@@ -3,8 +3,7 @@ import glob from "glob";
 
 export default class CommandHandler {
   public static async  loadCommands(client:Client) {
-    const commandFiles = await glob.sync("./src/commands/**/*.ts");
-
+    const commandFiles = glob.sync("./src/commands/**/*.ts");
     try {
       for await (const file of commandFiles) {
         const command = require(`../../${file}`);
