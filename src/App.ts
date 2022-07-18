@@ -7,12 +7,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default class App {
-  private client = new Client({ intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MEMBERS,
-    Intents.FLAGS.GUILD_VOICE_STATES,
-  ] });
+  private client = new Client({
+    partials: ["CHANNEL"],
+    intents: [
+      Intents.FLAGS.GUILDS,
+      Intents.FLAGS.GUILD_MESSAGES,
+      Intents.FLAGS.GUILD_MEMBERS,
+      Intents.FLAGS.GUILD_VOICE_STATES,
+      Intents.FLAGS.DIRECT_MESSAGES,
+    ],
+  });
 
   private TOKEN = process.env.BOT_TOKEN;
 
