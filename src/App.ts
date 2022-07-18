@@ -1,6 +1,5 @@
 import { Client, Collection, Intents, TextChannel } from 'discord.js';
 import { DatabaseConnection, SetActivity, Interactions } from './events';
-import { Player } from 'discord-player';
 import { ICommand } from './interfaces';
 import { CommandHandler } from './handler';
 import dotenv from 'dotenv';
@@ -25,8 +24,6 @@ export default class App {
   
   public static commands = new Collection<string, ICommand>();
 
-  public static player:Player;
-
   constructor () {
     SetActivity.setActivity(this.client);
     DatabaseConnection.databaseHandler();
@@ -35,9 +32,6 @@ export default class App {
     CommandHandler.commandWatcher(this.client);
     this.joinHandler();
     this.voiceHandler();
-    // this.client.on('ready', () => {
-      App.player = new Player(this.client);
-    // });
   }
 
   public start () { // Configurações de Inicialização & Autenticação do BOT
