@@ -9,6 +9,7 @@ export default class CommandHandler {
   public static async loadCommands(client:Client) {
     const commandFiles = glob.sync("./src/commands/**/*.ts");
     try {
+      console.log('[COMANDOS] Carregando Módulo de Comandos');
       for await (const file of commandFiles) {
         const command = require(`../../${file}`);
   
@@ -27,6 +28,7 @@ export default class CommandHandler {
         App.commands.set(command.name, command);
         // client.application!.commands.set(command.name, command);
       }
+      console.log('[COMANDOS] Comandos Carregados com Sucesso!');
     } catch (error) {
       console.error(error);
     }
@@ -45,13 +47,13 @@ export default class CommandHandler {
           AUTOR: ${message.author.username}
           CONTEÚDO: ${message.content}
           **********`);
-        message.reply(`
-        Olá usuário, ainda não possuo implementação para conversas via DM.
-        Mas que tal dar uma sugestão de comandos para adicionarmos por aqui?
-        Fique a vontade para escrever para nós.
-        OBS: Esta mensagem é automática, e irá se repetir a cada tentativa de contato via DM.
-        Obrigado pela Compreensão, até mais! :D
-        `);
+        // message.reply(`
+        // Olá usuário, ainda não possuo implementação para conversas via DM.
+        // Mas que tal dar uma sugestão de comandos para adicionarmos por aqui?
+        // Fique a vontade para escrever para nós.
+        // OBS: Esta mensagem é automática, e irá se repetir a cada tentativa de contato via DM.
+        // Obrigado pela Compreensão, até mais! :D
+        // `);
       }
       if ( 
         message.author.bot
