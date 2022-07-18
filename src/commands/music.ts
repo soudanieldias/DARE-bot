@@ -39,6 +39,7 @@ module.exports = {
           stream = await ytdl(args[1], {filter: 'audioonly'});
           player.play(createAudioResource(stream));
         }
+        connection.destroy();
       });
       
       switch (args[0]) {
