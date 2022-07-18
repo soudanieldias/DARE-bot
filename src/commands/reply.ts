@@ -8,7 +8,7 @@ module.exports = {
     try {
       const userPerms = message.member!.guild.me?.permissions.toArray();
       const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
-      const [CHANNEL_ID, MESSAGE_ID, REPLY_CONTENT] = [args[0], args[1], args[2]];
+      const [CHANNEL_ID, MESSAGE_ID] = [args[0], args[1]];
       const MESSAGE_TO_SEND = args.slice(2).join(' ');
   
       if(!CHANNEL_ID || !MESSAGE_ID) return message.reply('ID da MENSAGEM ou do CANAL incorretos');
@@ -25,7 +25,7 @@ module.exports = {
   
       if (channel && userMessage) {
         const messageStatus = await message.reply('Enviando Mensagem');
-        await (userMessage).reply(REPLY_CONTENT);
+        await (userMessage).reply(MESSAGE_TO_SEND);
         messageStatus.edit('Mensagem enviada com Sucesso!');
         return;
       }
