@@ -36,10 +36,27 @@ export default class CommandHandler {
     const BOT_PREFIX = process.env.BOT_PREFIX || '//';
 
     client.on('messageCreate', async (message) => {
+      // console.log(message);
+      // console.log(message.channel.type);
+      if(message.channel.type === 'DM' && !message.author.bot) {
+        console.log(`
+          **********
+          Mensagem recebida via DM:
+          AUTOR: ${message.author.username}
+          CONTEÚDO: ${message.content}
+          **********`);
+        message.reply(`
+        Olá usuário, ainda não possuo implementação para conversas via DM.
+        Mas que tal dar uma sugestão de comandos para adicionarmos por aqui?
+        Fique a vontade para escrever para nós.
+        OBS: Esta mensagem é automática, e irá se repetir a cada tentativa de contato via DM.
+        Obrigado pela Compreensão, até mais! :D
+        `);
+      }
       if ( 
         message.author.bot
         || !message.guild
-        || message.channel.type === 'DM'
+        // || message.channel.type === 'DM'
         || !message.content.startsWith(BOT_PREFIX)
         || message.content.startsWith(`<@!${client.user!.id}`)
         || message.content.startsWith(`<@${client.user!.id}`)
