@@ -21,7 +21,7 @@ module.exports = {
         adapterCreator: message.guild?.voiceAdapterCreator,
       };
 
-      SoundHandler.playSound(sourceURL, connectionParams);
+      SoundHandler.playSound(sourceURL, connectionParams, false);
 
     } catch (error) {
       console.error(error);

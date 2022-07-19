@@ -2,19 +2,25 @@ import { AudioPlayerStatus, createAudioPlayer, createAudioResource, joinVoiceCha
 import { IConnection } from '../interfaces';
 
 export default class SoundHandler {
-  public static async playSound(streamSource:any, connectionParams:IConnection) {
-    const player = createAudioPlayer();
+  public static player = createAudioPlayer();
+
+  public static playerQueue = false;
+
+  public static async playSound(streamSource:any, connectionParams:IConnection, stopSound:boolean) {
+  
+    const connection = joinVoiceChannel(connectionParams);
+
+    if(stopSound) return connection.destroy();
 
     const resource = createAudioResource(streamSource);
 
-    const connection = joinVoiceChannel(connectionParams);
+    connection.subscribe(this.player);
 
-    connection.subscribe(player);
-
-    player.play(resource);
+    this.player.play(resource);
     
-    player.on(AudioPlayerStatus.Idle,async () => {
-      connection.destroy();
-    });
+    // this.player.on(AudioPlayerStatus.Idle,async () => {
+      // if(this.playerQueue) return;
+      // connection.destroy();
+    // });
   }
 }
