@@ -1,5 +1,5 @@
 import { Client, Message, MessageActionRow, MessageButton, TextChannel } from "discord.js";
-import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
+import SoundHandler from "../../handler/SoundHandler";
 import fs from 'fs/promises';
 
 function sliceArray(fileObjects:Array<MessageButton>, max:number) {
@@ -32,7 +32,7 @@ module.exports = {
 
       if (!voiceChannel) {
         message.channel
-          .send({ content: ` <@!${message.member?.id}>You must be in a voice Channel first to perform this command.` });
+          .send({ content: `<@!${message.member?.id}> You must be in a voice Channel first to perform this command.` });
         return;
       }
 
@@ -50,19 +50,13 @@ module.exports = {
       }
 
       if (voiceChannel) {
-        const player = createAudioPlayer();
-
-        const resource = createAudioResource(`./src/audios/${args[0]}.mp3`);
-
-        const connection = joinVoiceChannel({
+        const connectionParams = {
           channelId: `${voiceChannel}`,
           guildId: guildId!,
           adapterCreator: adapterCreator!,
-        });
-        
-        player.play(resource);
+        };
 
-        connection.subscribe(player);
+        SoundHandler.playSound(`./src/audios/${args[0]}.mp3`, connectionParams, false);
       }
     } catch (error) {
       console.error(error);
