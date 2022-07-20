@@ -20,7 +20,7 @@ async function generateButtonsData() {
 module.exports = {
 	name: 'soundpad',
 	description: 'send a list of available Bot short songs',
-	category: 'audio',
+	category: 'music',
 	execute: async (client:Client, message:Message, args:Array<string>) => {
     try {
       const voiceChannel = message.member?.voice.channelId;
@@ -32,7 +32,7 @@ module.exports = {
 
       if (!voiceChannel) {
         message.channel
-          .send({ content: 'You must be in a voice Channel first to perform this command.' });
+          .send({ content: ` <@!${message.member?.id}>You must be in a voice Channel first to perform this command.` });
         return;
       }
 

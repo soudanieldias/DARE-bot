@@ -4,7 +4,7 @@ import SoundHandler from '../../handler/SoundHandler';
 module.exports = {
 	name: 'fileplayer',
 	description: 'A Test Message with a Example Text',
-	category: 'debug',
+	category: 'music',
 	execute: async (_client:Client, message:Message, args:Array<string>) => {
     try {
       const voiceChannel = message.member?.voice.channelId;

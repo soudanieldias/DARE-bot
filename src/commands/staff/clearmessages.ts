@@ -13,7 +13,7 @@ module.exports = {
       if (!hasAdminRole) return message.reply('ERRO: Não Autorizado!!!');
 
       if(!MESSAGES_TO_DELETE || MESSAGES_TO_DELETE > 100 || MESSAGES_TO_DELETE < 1 ) {
-        message.delete();
+        // message.delete();
         return message.reply({ content: 'Quantidade de mensagens à apagar Inválida!' });
       }
 
