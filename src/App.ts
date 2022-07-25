@@ -1,6 +1,7 @@
-import { Client, Intents } from 'discord.js';
+import { Client, Collection, Intents } from 'discord.js';
 import dotenv from 'dotenv';
-import { OnReady, SetActivity } from './events';
+import { LoadCommands, OnReady, SetActivity } from './events';
+import { ICommand } from './interfaces';
 
 dotenv.config();
 
@@ -11,7 +12,11 @@ export default class App {
 
   private TOKEN = process.env.BOT_TOKEN;
 
-  constructor () {}
+  public static commands = new Collection<String, ICommand>;
+
+  constructor () {
+    LoadCommands(this.client);
+  }
 
   public start () {
     OnReady(this.client, this.TOKEN); // Configurações de Inicialização & Auth do BOT
