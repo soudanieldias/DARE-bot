@@ -2,7 +2,7 @@ import { Client, GuildMember, Message } from "discord.js";
 
 module.exports = {
 	name: 'getmembers',
-	description: 'Get a list of members of server and returns in a embed',
+	description: 'Get a list of members of server and returns in a embed [STAFF]',
 	category: 'staff',
 	execute: async (client:Client, message:Message) => {
     try {

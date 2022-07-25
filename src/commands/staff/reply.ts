@@ -2,7 +2,7 @@ import { Client, Message, TextChannel } from "discord.js";
 
 module.exports = {
 	name: 'reply',
-	description: 'Reply a message into specified channel',
+	description: 'Reply a message into specified channel [STAFF]',
 	category: 'staff',
 	execute: async (client:Client, message:Message, args:Array<string>) => {
     try {

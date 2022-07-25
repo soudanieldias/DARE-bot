@@ -2,7 +2,7 @@ import { Client, Interaction, Message, TextChannel } from "discord.js";
 
 module.exports = {
 	name: 'clearmessages',
-	description: 'Clear a \'n\' quantity of messages in specified channel',
+	description: 'Clear a \'n\' quantity of messages in specified channel [STAFF]',
 	category: 'staff',
 	execute: async (_client:Client, message:Message, args:Array<string>) => {
     try {

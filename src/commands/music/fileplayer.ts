@@ -3,7 +3,7 @@ import SoundHandler from '../../handler/SoundHandler';
 
 module.exports = {
 	name: 'fileplayer',
-	description: 'A Test Message with a Example Text',
+	description: 'A command who plays a file in voice channel [Music]',
 	category: 'music',
 	execute: async (_client:Client, message:Message, args:Array<string>) => {
     try {

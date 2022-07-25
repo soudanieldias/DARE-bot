@@ -36,6 +36,7 @@ export default class App {
     CommandHandler.commandWatcher(this.client);
     this.joinHandler();
     this.voiceHandler();
+    this.errorWarnHandler();
   }
 
   public start () { // Configurações de Inicialização & Autenticação do BOT
@@ -79,5 +80,16 @@ export default class App {
         console.log('User Left Channel');
       }
     });
+  }
+
+  private errorWarnHandler() {
+    this.client.on('error', (error) => {
+      console.error(error);
+    });
+
+    this.client.on('warn', (warn) => {
+      console.warn(warn);
+    })
+
   }
 }

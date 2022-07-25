@@ -14,6 +14,8 @@ export default class SoundHandler {
 
     connection.subscribe(this.player);
 
+    resource.volume?.setVolume(100)
+
     this.player.play(resource);
   }
 }

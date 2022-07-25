@@ -36,24 +36,14 @@ export default class CommandHandler {
 
   public static async commandWatcher(client:Client) {
     const BOT_PREFIX = process.env.BOT_PREFIX || '//';
-
     client.on('messageCreate', async (message) => {
-      // console.log(message);
-      // console.log(message.channel.type);
       if(message.channel.type === 'DM' && !message.author.bot) {
-        console.log(`
-          **********
-          Mensagem recebida via DM:
-          AUTOR: ${message.author.username}
-          CONTEÚDO: ${message.content}
-          **********`);
-        // message.reply(`
-        // Olá usuário, ainda não possuo implementação para conversas via DM.
-        // Mas que tal dar uma sugestão de comandos para adicionarmos por aqui?
-        // Fique a vontade para escrever para nós.
-        // OBS: Esta mensagem é automática, e irá se repetir a cada tentativa de contato via DM.
-        // Obrigado pela Compreensão, até mais! :D
-        // `);
+        console.log(`**********
+        Mensagem recebida via DM:
+        AUTOR: ${message.author.username}
+        CONTEÚDO: ${message.content}
+        **********
+        `);
       }
       if ( 
         message.author.bot
@@ -82,8 +72,6 @@ export default class CommandHandler {
 
       } catch (error) {
         console.error(error);
-        // message.channel.send('Erro: Comando Não Encontrado!');
-        // console.error(`Erro ao Digitar o Comando: '${command}' \n[DEPURAÇÃO] Erro Retornado: '${err}'`); // [DEBUG]
       }
     });
   }

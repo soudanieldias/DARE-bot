@@ -3,7 +3,7 @@ import fs from 'fs/promises';
 
 module.exports = {
   name: 'generatereport',
-  description: 'Generate a complete Data report of players & Bots in server',
+  description: 'Generate a complete Data report of players & Bots in server [STAFF]',
   category: 'staff',
   execute: async (client:Client, message:Message) => {
     const userPerms = message.member!.guild.me?.permissions.toArray();

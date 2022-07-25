@@ -5,7 +5,7 @@ import SoundHandler from "../../handler/SoundHandler";
 
 module.exports = {
 	name: 'music',
-	description: 'Music commands',
+	description: 'Music commands [Music]',
 	category: 'music',
 	execute: async (_client:Client, message:Message, args:Array<string>) => {
     try {

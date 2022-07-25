@@ -2,7 +2,7 @@ import { Client, Message } from "discord.js";
 
 module.exports = {
 	name: 'sendpm',
-	description: 'Send a private message to specified Discord User',
+	description: 'Send a private message to specified Discord User [STAFF]',
 	category: 'staff',
 	execute: async (_client:Client, message:Message, args:Array<string>) => {
     const userPerms = message.member!.guild.me?.permissions.toArray();

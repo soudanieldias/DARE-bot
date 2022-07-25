@@ -2,7 +2,7 @@ import { Client, Interaction, Message, TextChannel } from "discord.js";
 
 module.exports = {
 	name: 'purgemessages',
-	description: 'Purges a \'n\' amount of sended messages from specified user',
+	description: 'Purges a \'n\' amount of sended messages from specified user [STAFF]',
 	category: 'staff',
 	execute: async (_client:Client, message:Message, args:Array<string>) => {
     try {

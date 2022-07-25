@@ -2,7 +2,7 @@ import { Client, Message, TextChannel } from "discord.js";
 
 module.exports = {
 	name: 'say',
-	description: 'Broadcast a message to specified channel',
+	description: 'Broadcast a message to specified channel [STAFF]',
 	category: 'staff',
 	execute: async (client:Client, message:Message, args:Array<string>) => {
     try {

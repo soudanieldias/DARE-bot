@@ -19,7 +19,7 @@ async function generateButtonsData() {
 
 module.exports = {
 	name: 'soundpad',
-	description: 'send a list of available Bot short songs',
+	description: 'send a list of available Bot short songs [Music]',
 	category: 'music',
 	execute: async (client:Client, message:Message, args:Array<string>) => {
     try {

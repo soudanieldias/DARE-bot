@@ -24,10 +24,13 @@ async function getRandomPic(_client:Client, message:Message) {
 
 module.exports = {
 	name: 'randompic',
-	description: 'Gets a arandom Pic from List',
+	description: 'Gets a arandom Pic from List [Developer]',
 	category: 'test',
 	execute: async (client:Client, message:Message, _args:Array<string>) => {
     try {
+      const userId = Number(message.author!.id);
+      const devId = Number(process.env.DEV_ID);
+      if(userId !== devId) {return message.reply('Erro: Não Autorizado!')};
       getRandomPic(client, message);
     } catch (error) {
       console.error("error");
