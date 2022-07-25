@@ -11,9 +11,9 @@ export default async (client:Client) => {
       const command = require(`../../${file}`);
       const { name, category, description } = command;
   
-      if (name) throw new Error(`[Erro]: Nome do Comando não encontrado! Arquivo: ${command}`);
-      if (category) return console.warn(`[Warn]: Categoria não encontrada! Arquivo: ${file}`);
-      if (description) return console.warn(`[Warn]: Description não encontrada! Arquivo: ${file}`);
+      if (!name) throw new Error(`[Erro]: Nome do Comando não encontrado! Arquivo: ${command}`);
+      if (!category) return console.warn(`[Warn]: Categoria não encontrada! Arquivo: ${file}`);
+      if (!description) return console.warn(`[Warn]: Description não encontrada! Arquivo: ${file}`);
 
       const cmd = client.application?.commands.cache.find((c) => (c.name === command.name));
 
