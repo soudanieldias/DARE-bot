@@ -1,6 +1,6 @@
 import { Client, Collection, Intents } from 'discord.js';
 import dotenv from 'dotenv';
-import { LoadCommands, OnReady, SetActivity } from './events';
+import { LoadCommands, OnMessageCreate, OnReady, SetActivity } from './events';
 import { ICommand } from './interfaces';
 
 dotenv.config();
@@ -20,6 +20,7 @@ export default class App {
 
   public start () {
     OnReady(this.client, this.TOKEN); // Configurações de Inicialização & Auth do BOT
+    OnMessageCreate(this.client);
     SetActivity.default(this.client); // Configurações de Atividade/Status do BOT
   }
 }
