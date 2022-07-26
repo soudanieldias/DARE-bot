@@ -14,9 +14,7 @@ export default class App {
       Intents.FLAGS.GUILD_VOICE_STATES,
       Intents.FLAGS.DIRECT_MESSAGES,
     ],
-  })
-
-  private BOT_PREFIX = process.env.BOT_PREFIX || '//';
+  });
 
   private TOKEN = process.env.BOT_TOKEN;
 
@@ -28,7 +26,7 @@ export default class App {
     LoadCommands(this.client);
     OnMessageCreate(this.client);
   }
-  
+
   public start () {
     OnReady(this.client, this.TOKEN); // Configurações de Inicialização & Auth do BOT
   }

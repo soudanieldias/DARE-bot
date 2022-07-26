@@ -12,7 +12,7 @@ export default (client:Client, token:string | undefined) => {
       Lista de Guilds:
       ${client.guilds.cache.map((guild) => guild.name).join('\n')}
       ------------------------------
-    `)
+    `);
   });
 
   client.login(token);
