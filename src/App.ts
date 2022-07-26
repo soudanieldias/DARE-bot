@@ -1,7 +1,9 @@
+import { PlayerSubscription } from '@discordjs/voice';
 import { Client, Collection, Intents } from 'discord.js';
-import dotenv from 'dotenv';
+import { Player } from 'discord-music-player';
 import { LoadCommands, OnInteraction, OnMessageCreate, OnReady, SetActivity } from './events';
 import { ICommand } from './interfaces';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ export default class App {
   private TOKEN = process.env.BOT_TOKEN;
 
   public static commands = new Collection<String, ICommand>;
+
+  public player = new Player(this.client, { leaveOnEmpty: false });
 
   constructor () {
     SetActivity.default(this.client); // Configurações de Atividade/Status do BOT
