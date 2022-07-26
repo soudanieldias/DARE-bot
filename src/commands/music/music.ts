@@ -16,6 +16,7 @@ module.exports = {
     switch (args[0]) {
       case 'play':
         await queue.join(voiceChannel);
+        if (!args[1]) return;
         const song = await queue.play(args[1]).catch((err) => {
           console.log(err);
           if (!guildQueue) queue.stop();
@@ -29,18 +30,25 @@ module.exports = {
         queue.stop();
         break;
       case 'volume':
-        if (!args[1]) return;
+        if (!args[1] || !guildQueue) return;
         if(0 > Number(args[1]) || Number(args[1]) > 100) return;
         queue.setVolume(Number(args[1]));
         break;
       case 'np':
         if(!guildQueue) return;
         const progressBar = guildQueue!.createProgressBar().prettier;
-        return message.reply(`Tocando: **${guildQueue.nowPlaying}**\n${progressBar}**`);
+        return message.reply(`**Tocando agora:**\n***${guildQueue.nowPlaying}\n${progressBar}***`);
+      case 'queue':
+        const queueList = queue.songs;
+        message
+          .reply(`**Playlist Atual:**\n${queueList
+            .map((music, index) =>
+            (`***${index+1}> ${music.author} - ${music.name} | ${music.duration}***\n`)).join('')}`);
+        break;
       default:
         message
-          .reply(`Comando não identificado! Tente://mus
-          ${process.env.BOT_PREFIX}play (youtube / spotify / file`);
+          .reply(`Comando não identificado! Tente:
+          ${process.env.BOT_PREFIX}play <NOME/LINK>`);
         break;
     }
   }
