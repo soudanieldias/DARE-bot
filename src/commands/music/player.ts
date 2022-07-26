@@ -3,8 +3,8 @@ import ytdl from 'ytdl-core-discord';
 import { SoundHandler } from '../../handlers';
 
 module.exports = {
-  name: 'play',
-  description: 'Toca uma música Ex: (//play youtube https://youtu.be/...)',
+  name: 'player',
+  description: 'Toca uma música Ex: (//player youtube https://youtu.be/...)',
   category: 'music',
   execute: async (_client:Client, message:Message, args:Array<string>) => {
     const voiceChannel = message.member?.voice.channelId;
