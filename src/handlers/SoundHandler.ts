@@ -8,7 +8,11 @@ export default class SoundHandler {
 
     const connection = joinVoiceChannel(connectionParams);
 
-    if(stopSound) return connection.destroy();
+    if (stopSound) {
+      this.player.stop();
+      connection.disconnect();
+      return;
+    }
 
     const resource = createAudioResource(streamSource);
 
