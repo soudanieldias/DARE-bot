@@ -6,7 +6,15 @@ import { ICommand } from './interfaces';
 dotenv.config();
 
 export default class App {
-  private client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
+  private client = new Client({
+    intents: [
+      Intents.FLAGS.GUILDS,
+      Intents.FLAGS.GUILD_MESSAGES,
+      Intents.FLAGS.GUILD_MEMBERS,
+      Intents.FLAGS.GUILD_VOICE_STATES,
+      Intents.FLAGS.DIRECT_MESSAGES,
+    ],
+  })
 
   private BOT_PREFIX = process.env.BOT_PREFIX || '//';
 
