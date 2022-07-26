@@ -21,8 +21,8 @@ module.exports = {
         return;
       }
 
-      if (!args[0]) {
-        const slicedResult = sliceArray(fileObjects, 5);
+      if (!args[0] && voiceChannel) {
+        const slicedResult = await sliceArray(fileObjects, 5);
         const allRows:Array<MessageActionRow> = [];
 
         slicedResult
@@ -40,11 +40,10 @@ module.exports = {
           channelId: `${voiceChannel}`,
           guildId: guildId!,
           adapterCreator: adapterCreator!,
-        }
+        };
 
         SoundHandler.playSound(`./src/audios/${args[0]}.mp3`, connectionParams, false);
       }
-
     } catch (error) {
       console.error(`[Erro]: ${error}`);
     }
