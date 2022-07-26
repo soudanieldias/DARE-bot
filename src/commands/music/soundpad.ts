@@ -28,7 +28,7 @@ module.exports = {
         slicedResult
           .forEach((result:Array<MessageActionRow>) => ( allRows
             .push(new MessageActionRow().addComponents(result))));
-        
+
         return allRows.forEach((rowData:MessageActionRow, index) => {
           (messageChannel as TextChannel)
             .send({ content: `Lista de Áudios: ${index + 1}`, components: [rowData] });
