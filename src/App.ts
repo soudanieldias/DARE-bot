@@ -1,7 +1,7 @@
 import { PlayerSubscription } from '@discordjs/voice';
 import { Client, Collection, Intents } from 'discord.js';
 import { Player } from 'discord-music-player';
-import { LoadCommands, OnInteraction, OnMessageCreate, OnReady, SetActivity } from './events';
+import { DBConnect, LoadCommands, OnInteraction, OnMessageCreate, OnReady, SetActivity } from './events';
 import { ICommand } from './interfaces';
 import dotenv from 'dotenv';
 
@@ -29,6 +29,7 @@ export default class App {
     OnInteraction(this.client);
     LoadCommands(this.client);
     OnMessageCreate(this.client);
+    DBConnect.databaseHandler();
   }
 
   public start () {
