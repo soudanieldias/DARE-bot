@@ -1,5 +1,5 @@
 ### Projeto de BOT Para a comunidade da DARE no Discord
-## Versão Atual: V1.0.0
+## Versão Atual: V1.0.1
 ## Desenvolvimento: Dias IT Services / Daniel Dias (@soudanieldias)
 
 # O BOT contará com as seguinte Funções (Em Desenvolvimento):
