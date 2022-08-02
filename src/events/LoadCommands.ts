@@ -23,7 +23,7 @@ export default async (client:Client) => {
 
       App.commands.set(command.name, command);
     }
-    console.log('[Comamnds] Módulo de Comandos Carregado com Sucesso');
+    console.log('[Commands] Módulo de Comandos Carregado com Sucesso');
   } catch (error) {
     console.error(error);
     console.log('[Commands] [Erro] Ocorreu um Erro ao Carregar os Comandos');
