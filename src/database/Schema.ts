@@ -51,6 +51,7 @@ export default class BotSchema {
   public static async createLog (msg:Message, data:any) {
     const logDB = new Log({
         commandName: data.cmd.name,
+        fullCommand: data.fullCommand,
         author: {
           username: msg.author.username,
           discriminator: msg.author.discriminator,

@@ -1,4 +1,5 @@
 import { Client, Message } from "discord.js";
+import Schema from '../database/Schema';
 import App from "../App";
 
 export default async (client: Client) => {
@@ -14,6 +15,7 @@ export default async (client: Client) => {
     ) return;
 
     const args = message.content.slice(BOT_PREFIX.length).trim().split(/ +/g);
+    const fullCommand = message.content.slice(BOT_PREFIX.length);
 
     if (!args) await message.reply('Erro: Digite um Comando!');
 
@@ -28,6 +30,10 @@ export default async (client: Client) => {
       }
 
       commandExists.execute(client, message, args);
+
+      if (Boolean(process.env.USE_DB)) {
+        Schema.createLog(message, { cmd: commandExists, fullCommand });
+      }
 
     } catch (error) {
     console.error(error);
