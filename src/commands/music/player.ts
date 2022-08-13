@@ -29,6 +29,9 @@ module.exports = {
         stream = args[1];
         SoundHandler.playSound(stream, connectionParams, false);
         break;
+      case 'stop':
+        SoundHandler.playSound('', connectionParams, true);
+        break;
       default:
         message
           .reply(`Comando não identificado! Tente:
