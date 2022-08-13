@@ -5,12 +5,12 @@ export default class SoundHandler {
   public static player = createAudioPlayer();
 
   public static async playSound(streamSource:any, connectionParams:IConnection, stopSound:boolean) {
-
+    
     const connection = joinVoiceChannel(connectionParams);
 
     if (stopSound) {
       this.player.stop();
-      connection.disconnect();
+      connection.destroy();
       return;
     }
 
