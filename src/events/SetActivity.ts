@@ -12,6 +12,8 @@ export default class setActivity {
           url: 'https://diasitservices.com.br/'
         });
 
+        client.user?.setPresence({ status: 'online' });
+
       console.log('[Activity] Activity Carregada com Sucesso.');
     });
   }
