@@ -1,5 +1,5 @@
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
-import { Player } from 'discord-music-player';
+// import { Player } from 'discord-music-player';
 import {
   DBConnect,
   LoadCommands,
@@ -28,7 +28,7 @@ export default class App {
 
   public static commands = new Collection<String, ICommand>;
 
-  public player = new Player(this.client, { leaveOnEmpty: false });
+  // public player = new Player(this.client, { leaveOnEmpty: false });
 
   constructor () {
     SetActivity.default(this.client); // Configurações de Atividade/Status do BOT
