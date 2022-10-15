@@ -1,4 +1,4 @@
-import { Client, Collection, Intents } from 'discord.js';
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import { Player } from 'discord-music-player';
 import {
   DBConnect,
@@ -16,11 +16,11 @@ dotenv.config();
 export default class App {
   private client = new Client({
     intents: [
-      Intents.FLAGS.GUILDS,
-      Intents.FLAGS.GUILD_MESSAGES,
-      Intents.FLAGS.GUILD_MEMBERS,
-      Intents.FLAGS.GUILD_VOICE_STATES,
-      Intents.FLAGS.DIRECT_MESSAGES,
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.GuildMembers,
+      GatewayIntentBits.GuildVoiceStates,
+      GatewayIntentBits.DirectMessages,
     ],
   });
 
