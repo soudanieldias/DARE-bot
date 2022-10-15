@@ -1,12 +1,12 @@
-import { Client, Message } from "discord.js";
+import { Client, Message, Role } from "discord.js";
 
 module.exports = {
 	name: 'sendpm',
 	description: 'Send a private message to specified Discord User [STAFF]',
 	category: 'staff',
 	execute: async (_client:Client, message:Message, args:Array<string>) => {
-    const userPerms = message.member!.guild.me?.permissions.toArray();
-    const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
+    const userPerms = message.member!.guild.me?.permissions.toArray();;
+    const hasAdminRole = userPerms?.some((role:Role) => (role == "ADMINISTRATOS"));
 
     if(!hasAdminRole) return message.reply('Erro: Não Autorizado!');
 
