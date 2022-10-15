@@ -1,4 +1,4 @@
-import { Client, Message } from "discord.js";
+import { ChannelType, Client, Message } from "discord.js";
 import Schema from '../database/Schema';
 import App from "../App";
 
@@ -8,7 +8,7 @@ export default async (client: Client) => {
     if ( 
       message.author.bot
       || !message.guild
-      || message.channel.type === 'DM'
+      || message.channel.type === ChannelType.DM
       || !message.content.startsWith(BOT_PREFIX)
       || message.content.startsWith(`<@!${client.user!.id}`)
       || message.content.startsWith(`<@${client.user!.id}`)

@@ -1,5 +1,5 @@
-import { Client } from "discord.js";
-import { Message } from "reconlx";
+import { Client, Message } from "discord.js";
+// import { Message } from "reconlx";
 import { SoundHandler } from "../../handlers";
 
 module.exports = {

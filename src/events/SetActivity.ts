@@ -1,4 +1,4 @@
-import { Client } from 'discord.js';
+import { ActivityType, Client } from 'discord.js';
 
 export default class setActivity {
   public static default(client:Client) {
@@ -8,7 +8,7 @@ export default class setActivity {
       client.user?.setActivity(
         'BOT Online',
         {
-          type: 'STREAMING',
+          type: ActivityType.Streaming,
           url: 'https://diasitservices.com.br/'
         });
 

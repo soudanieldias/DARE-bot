@@ -1,4 +1,5 @@
-import { Client, Message, MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "@discordjs/builders";
+import { Client, Message } from "discord.js";
 
 module.exports = {
 	name: 'serverinfo',
@@ -9,15 +10,21 @@ module.exports = {
     const membersCount = guildMembers!.filter((m) => !m.user.bot ).size;
     try {
       if (message.guild && client.user) {
-        const embed = new MessageEmbed()
-          .setColor("RANDOM")
+        const embed = new EmbedBuilder()
+          .setColor(0x0099FF)
           .setTitle('Informações do Servidor:')
-          .addField('Nome do Servidor: ', `${message.guild.name}` )
-          .addField('Dono do Servidor: ', `<@!${message.guild.ownerId}>` )
-          .addField('Membros no Servidor', `${membersCount}` )
-          .addField('Bots no Servidor', `${(guildMembers!.size - membersCount)}`)
-          .addField('Location', `${message!.guild?.preferredLocale}`, true)
-          .addField('Created', `${message!.guild.createdAt.toLocaleString()}`, true)
+          .addFields(
+            { name: 'Nome do Servidor: ', value: `${message.guild.name}` },
+            { name: 'Dono do Servidor: ', value: `<@!${message.guild.ownerId}>` },
+            { name: 'Membros no Servidor: ', value: `${membersCount}` },
+            { name: 'Bots no Servidor: ', value: `${(guildMembers!.size - membersCount)}` },
+            { name: 'Location: ', value: `${message!.guild?.preferredLocale}`, inline: true },
+            { name: 'Created', value: `${message!.guild.createdAt.toLocaleString()}`, inline: true },
+            { name: '', value: ''},
+            { name: '', value: ''},
+            { name: '', value: ''},
+            { name: '', value: ''}
+          )
           .setTimestamp()
           .setFooter({ text: `${client!.user.username}`, iconURL: `${client!.user.avatarURL()}`});
   
