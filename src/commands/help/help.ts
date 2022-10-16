@@ -9,16 +9,18 @@ module.exports = {
 	execute: async (client:Client, message:Message) => {
 		if (!client.user) return;
 		const commands = App.commands;
-		const listCommands = commands.forEach((cmd) => (
-			{ name: `**${cmd.name}**`, value: `***${cmd.description}***, Aliases: ${cmd.aliases}` }
-		));
-
+		
 		const embed = new EmbedBuilder()
-      .setColor(0x0099FF)
-      .setTitle('Available Commands:')
-			.addFields(
-				...listCommands,
-			)
-    message.channel.send({embeds: [embed]});
+		.setColor(0x0099FF)
+		.setTitle('Available Commands:')
+		
+		commands.forEach((cmd) => {
+			embed.addFields({
+				name: `Name: **${cmd.name}**`,
+				value: `Description: ***${cmd.description}***\n**Aliases: ${cmd.aliases || 'None'}**`
+			});
+		});
+
+		return message.channel.send({embeds: [embed]});
   }
 };
