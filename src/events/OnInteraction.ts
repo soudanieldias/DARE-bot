@@ -1,8 +1,8 @@
-import { Client } from "discord.js";
+import { Client, Interaction, InteractionButtonComponentData, InteractionType } from "discord.js";
 import App from "../App";
 
 export default (client:Client) => {
-  client.on('interaction', (interaction) => {
+  client.on('interactionCreate', (interaction:any) => {
     if (!interaction.isButton()) return;
 
     try {
