@@ -23,6 +23,7 @@ export default class App {
       GatewayIntentBits.GuildMembers,
       GatewayIntentBits.GuildVoiceStates,
       GatewayIntentBits.DirectMessages,
+      GatewayIntentBits.GuildIntegrations,
     ],
   });
 
