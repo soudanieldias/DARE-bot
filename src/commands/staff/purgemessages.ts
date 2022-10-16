@@ -1,4 +1,4 @@
-import { Client, Interaction, Message, TextChannel } from "discord.js";
+import { Client, Message, PermissionFlagsBits } from "discord.js";
 
 module.exports = {
 	name: 'purgemessages',
@@ -6,8 +6,7 @@ module.exports = {
 	category: 'staff',
 	execute: async (_client:Client, message:Message, args:Array<string>) => {
     try {
-      const userPerms = message.member!.guild.me?.permissions.toArray();
-      const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
+      const hasAdminRole = message.member!.permissions.has([PermissionFlagsBits.Administrator]);
       const USER_ID = Number(args[0]);
       const MESSAGES_TO_DELETE = Number(args[1]);
   

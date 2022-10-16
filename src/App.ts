@@ -18,6 +18,7 @@ export default class App {
     intents: [
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.MessageContent,
       GatewayIntentBits.GuildMembers,
       GatewayIntentBits.GuildVoiceStates,
       GatewayIntentBits.DirectMessages,

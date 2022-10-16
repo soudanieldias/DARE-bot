@@ -1,4 +1,4 @@
-import { Client, Message } from "discord.js";
+import { Client, Message, PermissionFlagsBits } from "discord.js";
 import fs from 'fs/promises';
 
 module.exports = {
@@ -6,8 +6,7 @@ module.exports = {
   description: 'Generate a complete Data report of players & Bots in server [STAFF]',
   category: 'staff',
   execute: async (client:Client, message:Message) => {
-    const userPerms = message.member!.guild.me?.permissions.toArray();
-    const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
+    const hasAdminRole = message.member!.permissions.has([PermissionFlagsBits.Administrator]);
 
     if(!hasAdminRole) return message.reply('Erro: Não Autorizado!');
 

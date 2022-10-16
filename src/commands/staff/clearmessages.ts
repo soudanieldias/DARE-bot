@@ -1,4 +1,4 @@
-import { Client, Interaction, Message, TextChannel } from "discord.js";
+import { Client, Message, PermissionFlagsBits, TextChannel } from "discord.js";
 
 module.exports = {
 	name: 'clearmessages',
@@ -6,8 +6,7 @@ module.exports = {
 	category: 'staff',
 	execute: async (_client:Client, message:Message, args:Array<string>) => {
     try {
-      const userPerms = message.member!.guild.me?.permissions.toArray();
-      const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
+      const hasAdminRole = message.member!.permissions.has([PermissionFlagsBits.Administrator]);
       const MESSAGES_TO_DELETE = Number(args[0]);
 
       if (!hasAdminRole) return message.reply('ERRO: Não Autorizado!!!');

@@ -1,4 +1,4 @@
-import { Client, Message, TextChannel } from "discord.js";
+import { Client, Message, PermissionFlagsBits, TextChannel } from "discord.js";
 
 module.exports = {
 	name: 'reply',
@@ -6,8 +6,7 @@ module.exports = {
 	category: 'staff',
 	execute: async (client:Client, message:Message, args:Array<string>) => {
     try {
-      const userPerms = message.member!.guild.me?.permissions.toArray();
-      const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
+      const hasAdminRole = message.member!.permissions.has([PermissionFlagsBits.Administrator]);
       const [CHANNEL_ID, MESSAGE_ID] = [args[0], args[1]];
       const MESSAGE_TO_SEND = args.slice(2).join(' ');
   
