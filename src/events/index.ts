@@ -3,6 +3,7 @@ import SetActivity from './SetActivity';
 import OnReady from './OnReady';
 import OnMessageCreate from './OnMessageCreate';
 import OnInteraction from './OnInteraction';
+import OnError from './OnError';
 import DBConnect from './DBConnect';
 
 export {
@@ -11,5 +12,6 @@ export {
   OnReady,
   OnMessageCreate,
   OnInteraction,
+  OnError,
   DBConnect
 };

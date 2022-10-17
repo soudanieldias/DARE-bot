@@ -48,7 +48,7 @@ export default class BotSchema {
   };
 
   // Create/find Log in Database
-  public static async createLog (msg:Message, data:any) {
+  public static async createLog (msg:any, data:any) {
     const logDB = new Log({
         commandName: data.cmd.name,
         fullCommand: data.fullCommand,

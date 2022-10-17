@@ -4,6 +4,7 @@ import { Player } from 'discord-player';
 import {
   DBConnect,
   LoadCommands,
+  OnError,
   OnInteraction,
   OnMessageCreate,
   OnReady,
@@ -39,6 +40,7 @@ export default class App {
     OnInteraction(this.client);
     LoadCommands(this.client);
     OnMessageCreate(this.client);
+    OnError(this.client);
     DBConnect.databaseHandler();
   }
 
