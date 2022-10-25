@@ -9,9 +9,9 @@ import DBConnect from './DBConnect';
 export {
   LoadCommands,
   SetActivity,
+  DBConnect,
   OnReady,
   OnMessageCreate,
   OnInteraction,
   OnError,
-  DBConnect
 };

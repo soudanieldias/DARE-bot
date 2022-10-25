@@ -26,7 +26,7 @@ export default async (client: Client) => {
 
       if (!commandExists) {
         await message.reply('Erro: Comando não Existe!');
-        return
+        return;
       }
 
       commandExists.execute(client, message, args);

@@ -4,7 +4,7 @@ import { Player } from 'discord-player';
 import {
   DBConnect,
   LoadCommands,
-  OnError,
+  // OnError,
   OnInteraction,
   OnMessageCreate,
   OnReady,
@@ -31,6 +31,7 @@ export default class App {
   private TOKEN = process.env.BOT_TOKEN;
 
   public static commands = new Collection<String, ICommand>;
+  public static slashCommands = new Collection<String, ICommand>;
 
   // public player = new Player(this.client, { leaveOnEmpty: false }); // discord-music-player
   public player = new Player(this.client);
@@ -40,7 +41,7 @@ export default class App {
     OnInteraction(this.client);
     LoadCommands(this.client);
     OnMessageCreate(this.client);
-    OnError(this.client);
+    // OnError(this.client);
     DBConnect.databaseHandler();
   }
 
