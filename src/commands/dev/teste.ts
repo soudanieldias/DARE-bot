@@ -1,20 +1,31 @@
-import { Client, Message, PermissionFlagsBits } from "discord.js";
+import { Client, CommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 
 module.exports = {
-	name: 'teste',
-	description: 'Comando de Teste',
+  data: new SlashCommandBuilder()
+    .setName('teste')
+    .setDescription('Comando de Teste [DEV]')
+    .addStringOption(option => (
+      option.setName('args')
+      .setDescription('Argumentos a serem passados para o Teste')
+      .setRequired(false)
+    )),
 	category: 'dev',
-	execute: async (_client:Client, message:Message, args:Array<string>) => {
+	execute: async (_client:Client, interaction:CommandInteraction) => {
     try {
-      const hasAdminRole = message.member!.permissions.has([PermissionFlagsBits.Administrator]);
+      if(interaction.isRepliable()) {
+        const hasAdminRole = interaction.memberPermissions?.has([PermissionFlagsBits.Administrator])
+        const messageArgs = interaction.options.get('args')?.value;
 
-      if (!hasAdminRole) {
-        message.reply('Erro: Não Autorizado!!!');
-        return;
+        if (!hasAdminRole) {
+          return interaction.reply('Erro: Não Autorizado!!!');
+        }
+
+        if(!messageArgs) {
+          return interaction.reply('Ok: Comando de Testes funcionando Corretamente! [SEM ARGUMENTOS PASSADOS]');
+        }
+
+        return interaction.reply(`Ok: Comando de Testes funcionando Corretamente! [ARGUMENTOS PASSADOS: '${messageArgs}' ]`);
       }
-
-      message.reply(`${args}`);
-
     } catch (error) {
       console.error(`Erro: ${error}`);
     }
