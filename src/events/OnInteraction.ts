@@ -1,11 +1,11 @@
-import { Client, Interaction, Message } from "discord.js";
+import { Client, Interaction } from "discord.js";
 import Schema from '../database/Schema';
 import App from "../App";
 
 export default (client:Client) => {
-  client.on('interactionCreate', (interaction:any) => {
+  client.on('interactionCreate', (interaction:Interaction) => {
     try {
-      if (interaction.isButton()) {
+      if (interaction.isButton() && interaction.isRepliable()) {
         const soundpad = App.commands.get('soundpad');
 
         if(!soundpad) return interaction.reply('ERRO: Ocorreu um erro com o SoundPad!');
@@ -30,14 +30,13 @@ export default (client:Client) => {
         return interaction.deferUpdate();
       }
       if (interaction.isChatInputCommand()) {
-        // console.log(interaction);
         const command = App.commands.get(interaction.commandName);
 
         if (!command) {
           return interaction.reply(`Ocorreu um erro ao executar o comando! Tente mais Tarde!`);
         }
 
-        command.execute(client, interaction);
+        return command.execute(client, interaction);
       }
     } catch (err) {
       console.error(err);

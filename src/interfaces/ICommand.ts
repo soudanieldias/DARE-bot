@@ -1,6 +1,11 @@
 export default interface ICommand {
-  name: string;
-  description: string;
+  data: {
+    name: string;
+    description: string;
+    aliases?: string[];
+  }
+  name?: string;
+  description?: string;
   aliases?: string[];
   permissions?: string[];
   cooldown?: number;

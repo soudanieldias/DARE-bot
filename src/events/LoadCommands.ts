@@ -8,28 +8,29 @@ export default async (client:Client) => {
     const commandFiles = glob.sync('./src/commands/**/*.ts');
     const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN!);
 
-    // const slashCommandFiles = glob.sync('./src/commands-slash/**/*.ts');
+    const restCommands = [];
 
     for await (const file of commandFiles) {
       const command = require(`../../${file}`);
-      const { name, category, description } = command;
+      const { name, description } = command.data;
 
       if (!name) throw new Error(`[Erro]: Nome do Comando não encontrado! Arquivo: ${command}`);
-      if (!category) return console.warn(`[Warn]: Categoria não encontrada! Arquivo: ${file}`);
-      if (!description) return console.warn(`[Warn]: Description não encontrada! Arquivo: ${file}`);
+      if (!description ) return console.warn(`[Warn]: Description não encontrada! Arquivo: ${file}`);
 
-      const cmd = client.application?.commands.cache.find((c) => (c.name === command.name));
+      const cmd = client.application?.commands.cache.find((c) => (c.name === command.data.name));
 
       if (cmd) return console.error('[Erro] Já existe um comando carregado com o mesmo nome');
 
       delete require.cache[require.resolve(`../../${file}`)];
 
-      App.commands.set(command.name, command);
+      App.commands.set(command.data.name, command);
+      restCommands.push(command.data);
     }
+
     await rest.put(Routes.applicationCommands(process.env.CLIENT_ID!),
       {
-        // body: JSON.stringify(App.commands),
-        body: App.commands, // Old commands LOADER
+        body: restCommands,
+        // body: App.commands, // Old commands LOADER
       }
     );
     console.log('[Commands] Módulo de Comandos Carregado com Sucesso');
