@@ -1,10 +1,13 @@
-import { Client, Message } from "discord.js";
+import { Client, CommandInteraction, Message, SlashCommandBuilder } from "discord.js";
 
 module.exports = {
-	name: 'ping',
-	description: 'Ping? Pong! [User]',
-	category: 'Utility',
-	execute: async (client:Client, message:Message) => {
-		message.reply({ content: `Pong!\n${client.ws.ping}ms!` });
+	data: new SlashCommandBuilder()
+    .setName('ping')
+    .setDescription('Ping? Pong!'),
+	category: 'features',
+	execute: async (client:Client, interaction:CommandInteraction) => {
+		if(interaction.isRepliable()) {
+			return interaction.reply({ content: `Pong!\n${client.ws.ping}ms!` });
+		}
 	}
 };
