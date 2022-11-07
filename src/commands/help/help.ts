@@ -1,27 +1,27 @@
-import { EmbedBuilder } from "@discordjs/builders";
-import { Client, Message } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "@discordjs/builders";
+import { Client, Interaction } from "discord.js";
 import App from '../../App';
 
 module.exports = {
-	name: 'help',
-	description: 'Comando de ajuda com a Lista de comandos [Esta Lista]',
+	data: new SlashCommandBuilder()
+    .setName('help')
+    .setDescription('Lista os comandos disponíveis no BOT'),
 	category: 'help',
-	execute: async (client:Client, message:Message) => {
+	execute: async (client:Client, interaction:Interaction) => {
 		if (!client.user) return;
 		const commands = App.commands;
 		
 		const embed = new EmbedBuilder()
 		.setColor(0x0099FF)
-		.setTitle('Available Commands:')
-		
+		.setTitle('Comandos Disponíveis:');
+
 		commands.forEach((cmd) => {
 			embed.addFields({
-				name: `Name: **${cmd.name}**`,
-				value: `Description: ***${cmd.description}***\n**Aliases: ${cmd.aliases || 'None'}**`
+				name: `Name: **${cmd.data.name}**`,
+				value: `Description: ***${cmd.data.description}***\n`, // **Aliases: ${cmd.aliases || 'None'}**`
 			});
 		});
 
-		// return message.channel.send({embeds: [embed]});
-		return message.reply({embeds: [embed]});
+		return interaction.isRepliable() ? interaction.reply({embeds: [embed]}) : '';
   }
 };
