@@ -1,5 +1,5 @@
 import { EmbedBuilder, SlashCommandBuilder } from "@discordjs/builders";
-import { Client, Interaction } from "discord.js";
+import { Client, CommandInteraction } from "discord.js";
 import App from '../../App';
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
     .setName('help')
     .setDescription('Lista os comandos disponíveis no BOT'),
 	category: 'help',
-	execute: async (client:Client, interaction:Interaction) => {
+	execute: async (client:Client, interaction:CommandInteraction) => {
 		if (!client.user) return;
 		const commands = App.commands;
 		
