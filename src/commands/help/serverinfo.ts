@@ -1,34 +1,31 @@
-import { EmbedBuilder } from "@discordjs/builders";
-import { Client, Message } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "@discordjs/builders";
+import { Client, CommandInteraction } from "discord.js";
 
 module.exports = {
-	name: 'serverinfo',
-	description: 'Mostra um Embed com informações sobre a Guild',
+  data: new SlashCommandBuilder()
+    .setName('serverinfo')
+    .setDescription('Mostra um Embed com as informações sobre o Servidor/Guild'),
 	category: 'help',
-	execute: async (client:Client, message:Message, _args:Array<string>) => {
-    const guildMembers = await message.guild?.members.fetch();
-    const membersCount = guildMembers!.filter((m) => !m.user.bot ).size;
+	execute: async (client:Client, interaction:CommandInteraction) => {
     try {
-      if (message.guild && client.user) {
-        const embed = new EmbedBuilder()
+      const guildMembers = await interaction.guild?.members.fetch();
+      const membersCount = guildMembers!.filter((member) => !member.user.bot ).size;
+      if (interaction.guild && client.user && interaction.isRepliable()) {
+        const guildEmbed = new EmbedBuilder()
           .setColor(0x0099FF)
           .setTitle('Informações do Servidor:')
           .addFields(
-            { name: 'Nome do Servidor: ', value: `${message.guild.name}` },
-            { name: 'Dono do Servidor: ', value: `<@!${message.guild.ownerId}>` },
+            { name: 'Nome do Servidor: ', value: `${interaction.guild.name}` },
+            { name: 'Dono do Servidor: ', value: `<@!${interaction.guild.ownerId}>` },
             { name: 'Membros no Servidor: ', value: `${membersCount}` },
             { name: 'Bots no Servidor: ', value: `${(guildMembers!.size - membersCount)}` },
-            { name: 'Location: ', value: `${message!.guild?.preferredLocale}`, inline: true },
-            { name: 'Created', value: `${message!.guild.createdAt.toLocaleString()}`, inline: true },
-            { name: '', value: ''},
-            { name: '', value: ''},
-            { name: '', value: ''},
-            { name: '', value: ''}
+            { name: 'Location: ', value: `${interaction!.guild?.preferredLocale}`, inline: true },
+            { name: 'Created', value: `${interaction!.guild.createdAt.toLocaleString()}`, inline: true },
           )
           .setTimestamp()
           .setFooter({ text: `${client!.user.username}`, iconURL: `${client!.user.avatarURL()}`});
-  
-        message.channel.send({embeds: [embed]});
+
+        interaction.reply({ embeds: [guildEmbed] });
       }
     } catch (error) {
       console.error(error);
