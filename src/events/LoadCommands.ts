@@ -24,7 +24,7 @@ export default async (client:Client) => {
       delete require.cache[require.resolve(`../../${file}`)];
 
       App.commands.set(command.data.name, command);
-      restCommands.push(command.data.name, command.data);
+      restCommands.push(command.data);
     }
 
     await rest.put(Routes.applicationCommands(process.env.CLIENT_ID!),
