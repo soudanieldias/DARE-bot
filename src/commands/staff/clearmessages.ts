@@ -3,7 +3,7 @@ import { Client, CommandInteraction, PermissionFlagsBits, SlashCommandBuilder, T
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('clearmessages')
-    .setDescription('Remove um número \'N\' de mensagens no canal atual. [STAFF]')
+    .setDescription('Remove um número especificado de mensagens no canal atual. [STAFF]')
     .addIntegerOption(quantity => (
       quantity.setName("quantity")
       .setDescription("Digite a quantidade de mensagens a serem deletadas (Um número entre 1-100).")
