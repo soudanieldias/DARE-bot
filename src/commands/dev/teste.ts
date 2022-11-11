@@ -24,7 +24,7 @@ module.exports = {
           return interaction.reply('Ok: Comando de Testes funcionando Corretamente! [SEM ARGUMENTOS PASSADOS]');
         }
 
-        return interaction.reply(`Ok: Comando de Testes funcionando Corretamente! [ARGUMENTOS PASSADOS: '${messageArgs}' ]`);
+        return interaction.reply(`Ok: Comando de Testes funcionando Corretamente! [ARGUMENTOS PASSADOS]: '${messageArgs}' `);
       }
     } catch (error) {
       console.error(`Erro: ${error}`);
