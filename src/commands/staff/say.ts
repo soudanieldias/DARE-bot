@@ -1,32 +1,38 @@
-import { Client, Message, PermissionFlagsBits, Role, TextChannel } from "discord.js";
+import { Client, CommandInteraction, Message, PermissionFlagsBits, Role, SlashCommandBuilder, TextChannel } from "discord.js";
 
 module.exports = {
-	name: 'say',
-	description: 'Broadcast a message to specified channel [STAFF]',
-	category: 'staff',
-	execute: async (client:Client, message:Message, args:Array<string>) => {
+  data: new SlashCommandBuilder()
+    .setName('say')
+    .setDescription('Broadcast a message to specified channel [STAFF]')
+    .addChannelOption(channel => (
+      channel.setName("channel")
+      .setDescription("Canal onde deseja enviar a Mensagem")
+      .setRequired(true)
+    ))
+    .addStringOption(message => (
+      message.setName('message')
+      .setDescription('Mensagem que será enviada no canal Selecionado')
+      .setRequired(true)
+    )),
+  category: 'staff',
+	execute: async (client:Client, interaction:CommandInteraction) => {
     try {
-      const hasAdminRole = message.member!.permissions.has([PermissionFlagsBits.Administrator]);
-      const CHANNEL_ID = args[0];
-      const MESSAGE_TO_SEND = args.slice(1).join(' ');
-  
-      const channel = client.channels.cache.find((channel) => channel.id === CHANNEL_ID);
-  
-      if (!channel) message.reply('ERRO: Canal não encontrado!');
-  
+      const hasAdminRole = interaction.memberPermissions?.has([PermissionFlagsBits.Administrator]);
+      const CHANNEL_ID = interaction.options.get('channel')?.value;
+      const MESSAGE_CONTENT = interaction.options.get('message')?.value;
+
       if (!hasAdminRole) {
-        message.reply('ERRO: Não Autorizado!!!');
-        return;
-      }
-  
-      if (channel) {
-        (channel as TextChannel).send(`${MESSAGE_TO_SEND}`);
-        message.reply('Mensagem enviada com Sucesso!');
-        return;
+        return interaction.reply('Erro: Não Autorizado!!!');
       }
 
+      const channel = await interaction.guild?.channels.fetch(`${CHANNEL_ID}`);
+
+      await (channel as TextChannel).send(`${MESSAGE_CONTENT}`);
+      
+      return interaction.reply('Mensagem enviada com Sucesso!');
+
     } catch (error) {
-      console.error("error");
+      console.error("[SAY] Error: ", error);
     }
   }
 };
