@@ -20,6 +20,6 @@ export default class SoundHandler {
 
     resource.volume?.setVolume(100);
 
-    this.player.play(resource);
+    return this.player.play(resource);
   }
 }
