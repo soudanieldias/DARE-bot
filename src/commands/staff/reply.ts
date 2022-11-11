@@ -1,33 +1,45 @@
-import { Client, Message, PermissionFlagsBits, TextChannel } from "discord.js";
+import { Client, CommandInteraction, Message, MessageInteraction, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from "discord.js";
 
 module.exports = {
-	name: 'reply',
-	description: 'Reply a message into specified channel [STAFF]',
+  data: new SlashCommandBuilder()
+    .setName('reply')
+    .setDescription('Responde a mensagem de um usuário específico em um canal passado.')
+    .addChannelOption(channel => (
+      channel.setName('channel')
+      .setDescription('Canal onde está a mensagem')
+      .setRequired(true)
+    ))
+    .addStringOption(messageId => (
+      messageId.setName('messageid')
+      .setDescription('ID da mensagem do usuário sendo Respondido')
+      .setRequired(true)
+    ))
+    .addStringOption(message => (
+      message
+      .setName('message')
+      .setDescription('Mensagem a ser Enviada')
+      .setRequired(true)
+    )),
 	category: 'staff',
-	execute: async (client:Client, message:Message, args:Array<string>) => {
+	execute: async (client:Client, interaction:CommandInteraction, args:Array<string>) => {
     try {
-      const hasAdminRole = message.member!.permissions.has([PermissionFlagsBits.Administrator]);
-      const [CHANNEL_ID, MESSAGE_ID] = [args[0], args[1]];
-      const MESSAGE_TO_SEND = args.slice(2).join(' ');
-  
-      if(!CHANNEL_ID || !MESSAGE_ID) return message.reply('ID da MENSAGEM ou do CANAL incorretos');
+      const hasAdminRole = interaction.memberPermissions?.has([PermissionFlagsBits.Administrator]);
 
-      const channel = client.channels.cache.find((channel) => channel.id === CHANNEL_ID);
-      const userMessage = await (channel as TextChannel).messages.fetch(MESSAGE_ID);
-
-      if (!channel || !userMessage) message.reply('ERRO: Canal ou Mensagem não Encontrada!');
-  
       if (!hasAdminRole) {
-        message.reply('ERRO: Não Autorizado!!!');
+        interaction.reply('ERRO: Não Autorizado!!!');
         return;
       }
-  
-      if (channel && userMessage) {
-        const messageStatus = await message.reply('Enviando Mensagem');
-        await (userMessage).reply(MESSAGE_TO_SEND);
-        messageStatus.edit('Mensagem enviada com Sucesso!');
-        return;
-      }
+
+      const CHANNEL_ID = interaction.options.get('channel')?.value;
+      const MESSAGE_ID = interaction.options.get('messageid')?.value;
+      const MESSAGE_CONTENT = interaction.options.get('message')?.value;
+        
+      const channel = client.channels.cache.find((channel) => channel.id === CHANNEL_ID);
+      const userMessage = await (channel as TextChannel).messages.fetch(`${MESSAGE_ID}`);
+
+      await interaction.reply('Enviando Mensagem');
+      await (userMessage).reply(`${MESSAGE_CONTENT}`);
+      return interaction.editReply('Mensagem enviada com Sucesso!');
 
     } catch (error) {
       console.error("error");
