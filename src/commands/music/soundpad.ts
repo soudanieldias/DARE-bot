@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } from '@discordjs/builders';
-import { ButtonInteraction, Client, CommandInteraction, Interaction, MessageInteraction, TextChannel } from 'discord.js';
+import { Client, Interaction, TextChannel } from 'discord.js';
 import { SoundHandler } from '../../handlers';
 import { sliceArray, generateButtonsData } from '../../helpers';
 
@@ -39,7 +39,7 @@ module.exports = {
           padName = interaction.customId;
           return SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
 
-        } else if (interaction.isCommand()) {
+        } else if (interaction.isCommand() && padName) {
           padName = interaction.options.get('padname')?.value;
           SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
           await interaction.reply({ content: `Tocando: ${padName}`, ephemeral: false });

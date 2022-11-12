@@ -1,6 +1,5 @@
 import { Client, Collection, GatewayIntentBits /*, Routes, REST */ } from 'discord.js';
-// import { Player } from 'discord-music-player';
-import { Player } from 'discord-player';
+import { Player } from 'discord-music-player';
 import {
   DBConnect,
   LoadCommands,
@@ -33,8 +32,7 @@ export default class App {
   public static commands = new Collection<String, ICommand>;
   public static slashCommands = new Collection<String, ICommand>;
 
-  // public player = new Player(this.client, { leaveOnEmpty: false }); // discord-music-player
-  public player = new Player(this.client);
+  public player = new Player(this.client, { leaveOnEmpty: false }); // discord-music-player
 
   constructor () {
     SetActivity.default(this.client); // Configurações de Atividade/Status do BOT
