@@ -9,26 +9,10 @@ export default (client:Client) => {
       if (interaction.isButton()) {
         if (interaction.isRepliable()) {
           const soundpad = App.commands.get('soundpad');
-          console.log(App.commands);
   
           if(!soundpad) return interaction.reply('ERRO: Ocorreu um erro com o SoundPad!');
 
-
-          const guild = client.guilds.cache.get(interaction.guildId!);
-          const member = guild?.members.cache.get(interaction.member!.user.id);
-          const messageChannel = interaction.channel;
-          const voiceChannel = member?.voice.channel;
-          const adapterCreator = interaction.guild?.voiceAdapterCreator;
-
-          const connectionParams = {
-            channelId: `${voiceChannel}`,
-            guildId: interaction.guildId!,
-            adapterCreator: adapterCreator!,
-          };
-
-          if (!voiceChannel) return;
-
-          SoundHandler.playSound(`./src/audios/${interaction.customId}.mp3`, connectionParams, false);
+          soundpad.execute(client, interaction);
           
           const msg = { 
             author: interaction.user,
