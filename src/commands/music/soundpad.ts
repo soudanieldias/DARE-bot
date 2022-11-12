@@ -6,16 +6,23 @@ import { sliceArray, generateButtonsData } from '../../helpers';
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('soundpad')
-    .setDescription('Retorna uma lista de botões de áudio para usar no canal de Voz específico'),
+    .setDescription('Retorna uma lista de botões de áudio para usar no canal de Voz específico')
+    .addStringOption(padName => (
+      padName.setName('padname')
+      .setDescription('Nome do Pad a ser Executado')
+    )),
   category: 'music',
-  execute: async (client:Client, interaction:ButtonInteraction) => {
+  execute: async (client:Client, interaction:Interaction) => {
     try {
       if (interaction.isRepliable()) {
         const guild = client.guilds.cache.get(interaction.guildId!);
         const member = guild?.members.cache.get(interaction.member!.user.id);
         const messageChannel = interaction.channel;
         const voiceChannel = member?.voice.channel?.id;
-        const padName = interaction.customId;
+
+        // const padName = interaction.customId;
+        let padName;
+
         const adapterCreator = interaction.guild?.voiceAdapterCreator;
         
         if(!voiceChannel) {
@@ -28,7 +35,16 @@ module.exports = {
           adapterCreator: adapterCreator!,
         };
 
-        if (voiceChannel && !padName) {
+        if (interaction.isButton()) {
+          padName = interaction.customId;
+          return SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
+
+        } else if (interaction.isCommand()) {
+          padName = interaction.options.get('padname')?.value;
+          SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
+          await interaction.reply({ content: `Tocando: ${padName}`, ephemeral: false });
+          return interaction.deleteReply();
+        } else if (voiceChannel && !padName) {
           // Generates an Array of ButtonBuilder instances
           const fileObjects = await generateButtonsData();
           // Logica para interaction.isButton
@@ -53,7 +69,7 @@ module.exports = {
           ));
         }
 
-        return SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
+
       }
     } catch (error) {
       console.error(`[Erro]: ${error}`);
