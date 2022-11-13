@@ -1,6 +1,9 @@
-import { Client, GuildMember, Message } from "discord.js";
+import { Client, GuildMember, Message, SlashCommandBuilder } from "discord.js";
 
 module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('')
+    .setDescription(''),
 	name: 'getmembers',
 	description: 'Get a list of members of server and returns in a embed [STAFF]',
 	category: 'staff',

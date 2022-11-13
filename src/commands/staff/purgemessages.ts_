@@ -1,6 +1,9 @@
-import { Client, Message, PermissionFlagsBits } from "discord.js";
+import { Client, Message, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 
 module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('')
+    .setDescription(''),
 	name: 'purgemessages',
 	description: 'Purges a \'n\' amount of sended messages from specified user [STAFF]',
 	category: 'staff',
