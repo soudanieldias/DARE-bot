@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { Client, CommandInteraction, Interaction, SlashCommandBuilder } from "discord.js";
 import { app } from "../..";
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
       .setRequired(false)
     )),
   category: 'music',
-  execute: async (_client:Client, interaction:CommandInteraction) => {
+  execute: async (_client:Client, interaction:Interaction) => {
     try {
       if (interaction.isRepliable()) {
         const member = interaction.guild?.members.cache.get(interaction.member!.user.id);
@@ -40,27 +40,27 @@ module.exports = {
         const guildQueue = app.player.getQueue(`${guildId}`);
         const queue = app.player.createQueue(`${guildId}`);
 
-        const eventType = interaction.options.get('event')?.value;
-        const paramUrl = interaction.options.get('url')?.value;
-        const sourceVolume = interaction.options.get('volume')?.value;
+        if (interaction.isCommand())
+        {
+          var eventType = interaction.options.get('event')?.value;
+          var paramUrl = interaction.options.get('url')?.value;
+          var sourceVolume = interaction.options.get('volume')?.value;
+        }
 
-        const adapterCreator = interaction.guild?.voiceAdapterCreator;
-
-        const connectionParams = {
-          channelId: `${voiceChannel}`,
-          guildId: interaction.guildId!,
-          adapterCreator: adapterCreator!,
-        };
+        if (!voiceChannel) {
+          return interaction
+            .reply('Você precisa estar em um canal de voz para executar o music');
+        }
 
         switch (eventType) {
           case 'play':
+            await interaction.reply(`Adicionando música a fila...`)
             await queue.join(voiceChannel);
             await queue.play(`${paramUrl}`)
               .catch((err) => {
                 console.log(err);
                 if (!guildQueue) queue.stop();
               });
-            await interaction.reply(`Adicionando música a fila...`)
             break;
           case 'stop':
             queue.stop();
@@ -81,7 +81,8 @@ module.exports = {
             if (!guildQueue || !queue.isPlaying) return interaction.reply('Nada tocando...');
 
             const progressBar = guildQueue!.createProgressBar().prettier;
-            await interaction.reply(`**Tocando agora:**\n***${guildQueue.nowPlaying}\n${progressBar}***`);
+            await interaction
+              .reply(`**Tocando agora:**\n***${guildQueue.nowPlaying}\n${progressBar}***`);
             break;
 
           case 'queue':
