@@ -16,9 +16,9 @@ module.exports = {
       .addChoices({ name: 'volume', value: 'volume' })
       .setRequired(true)
     ))
-    .addStringOption(url => (
-      url.setName('url')
-      .setDescription('Url do Stream a ser Tocado!')
+    .addStringOption(query => (
+      query.setName('query')
+      .setDescription('query do Stream a ser Tocado!')
       .setRequired(false)
     ))
     .addIntegerOption(quantity => (
@@ -43,7 +43,7 @@ module.exports = {
         if (interaction.isCommand())
         {
           var eventType = interaction.options.get('event')?.value;
-          var paramUrl = interaction.options.get('url')?.value;
+          var paramquery = interaction.options.get('query')?.value;
           var sourceVolume = interaction.options.get('volume')?.value;
         }
 
@@ -56,7 +56,7 @@ module.exports = {
           case 'play':
             await interaction.reply(`Adicionando música a fila...`)
             await queue.join(voiceChannel);
-            await queue.play(`${paramUrl}`)
+            await queue.play(`${paramquery}`)
               .catch((err) => {
                 console.log(err);
                 if (!guildQueue) queue.stop();
