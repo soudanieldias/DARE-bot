@@ -5,18 +5,19 @@ export default class DatabaseConnection {
     try {
       const MONGO_URI = process.env.MONGO_URI;
       const USE_DB = process.env.USE_DB;
-
-      if(!MONGO_URI?.length && USE_DB === 'False') {
+      console.log(Boolean(process.env.USE_DB));
+      
+      if(!MONGO_URI?.length || Boolean(process.env.USE_DB) === false) {
         console.log('[DataBase] MongoDB Desabilitado');
         return;
-      };
-
-      console.log('[DataBase] Inicializando o Mongo')
-
-      mongoose.connect(`${MONGO_URI}`, { keepAlive: true })
-        .then(() => {
-          console.log('[DataBase] Mongo Inicializado com Sucesso!');
-        });
+      } else {
+        console.log('[DataBase] Inicializando o Mongo')
+  
+        mongoose.connect(`${MONGO_URI}`, { keepAlive: true })
+          .then(() => {
+            console.log('[DataBase] Mongo Inicializado com Sucesso!');
+          });
+      }
 
     } catch (error) {
       console.error(error);

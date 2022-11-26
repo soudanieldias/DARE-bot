@@ -25,7 +25,7 @@ export default (client:Client) => {
             fullCommand: `soundpad ${interaction.customId}`,
           }
   
-          if (Boolean(process.env.USE_DB)) {
+          if (Boolean(process.env.USE_DB) === true) {
             Schema.createLog(msg, data);
           }
   
