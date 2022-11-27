@@ -39,24 +39,18 @@ module.exports = {
           padName = interaction.customId;
           return SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
 
-        } else if (interaction.isCommand() && padName) {
+        } else if (interaction.isCommand()) {
           padName = interaction.options.get('padname')?.value;
           SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
           await interaction.reply({ content: `Tocando: ${padName}`, ephemeral: false });
           return interaction.deleteReply();
         } else if (voiceChannel && !padName) {
-          // Generates an Array of ButtonBuilder instances
           const fileObjects = await generateButtonsData();
-          // Logica para interaction.isButton
-          // Lógica para interaction.isChatInputCommand
-          // Slices buttons array in sub-arrays of max of 5 elements
+
           const slicedResult:Array<Array<ButtonBuilder>> = await sliceArray(fileObjects, 5);
 
-          // Set the array who stores all instances of ActionRowBuilder with 5 buttons each
           const allRows:Array<ActionRowBuilder<any>> = [];
 
-          // Iteract over all sub-array in slicedResult, and push each ActionRowBuilder instance
-          // with 5 buttons into allRows array
           slicedResult.forEach((subArray:Array<ButtonBuilder>) => {
             const actionRowBuilder = new ActionRowBuilder()
               .addComponents(subArray);
