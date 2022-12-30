@@ -8,8 +8,9 @@ module.exports = {
     .setName('soundpad')
     .setDescription('Retorna uma lista de botões de áudio para usar no canal de Voz específico')
     .addStringOption(padName => (
-      padName.setName('padname')
-      .setDescription('Nome do Pad a ser Executado')
+      padName
+        .setName('padname')
+        .setDescription('Nome do Pad a ser Executado')
     )),
   category: 'music',
   execute: async (client:Client, interaction:Interaction) => {
@@ -35,16 +36,10 @@ module.exports = {
           adapterCreator: adapterCreator!,
         };
 
-        if (interaction.isButton()) {
-          padName = interaction.customId;
-          return SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
-
-        } else if (interaction.isCommand()) {
-          padName = interaction.options.get('padname')?.value;
-          SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
-          await interaction.reply({ content: `Tocando: ${padName}`, ephemeral: false });
-          return interaction.deleteReply();
-        } else if (voiceChannel && !padName) {
+        if (interaction.isButton()) { padName = interaction.customId; }
+        if (interaction.isCommand()) { padName = interaction.options.get('padname')?.value; }
+        
+        if (voiceChannel && !padName) {
           const fileObjects = await generateButtonsData();
 
           const slicedResult:Array<Array<ButtonBuilder>> = await sliceArray(fileObjects, 5);
@@ -61,9 +56,10 @@ module.exports = {
             (messageChannel as TextChannel)
               .send({ content: `Lista de Áudios: ${index + 1}`, components: [rowData]})
           ));
+        } else {
+          SoundHandler.playSound(`./src/audios/${padName}.mp3`, connectionParams, false);
+          await interaction.reply({ content: `Tocando ${padName}`, ephemeral: true });
         }
-
-
       }
     } catch (error) {
       console.error(`[Erro]: ${error}`);
