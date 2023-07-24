@@ -1,4 +1,4 @@
-import { Client, Interaction } from "discord.js";
+import { Client, Interaction } from 'discord.js';
 import App from "../App";
 
 module.exports = {
@@ -10,7 +10,6 @@ module.exports = {
     await client.application?.commands.fetch(interaction.commandId).catch((e) => console.log(e));
 
     try {
-      // const command = client.commands.get(interaction.command?.name ?? "")
       const command = App.commands.get(interaction.command?.name ?? "")
 
       if (!command) return;

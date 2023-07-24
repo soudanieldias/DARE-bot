@@ -1,5 +1,7 @@
-import SetActivity from "./SetActivity";
-import DatabaseConnection from "./DatabaseConnection";
-import Interactions from "./Interactions";
+import LoadCommands from './LoadCommands';
+import SetActivity from './SetActivity';
+import OnReady from './OnReady';
+import OnMessageCreate from './OnMessageCreate';
+import OnInteraction from './OnInteraction';
 
-export { SetActivity, DatabaseConnection, Interactions };
+export { LoadCommands, SetActivity, OnReady, OnMessageCreate, OnInteraction };

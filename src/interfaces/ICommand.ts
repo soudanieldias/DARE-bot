@@ -1,4 +1,4 @@
-export default interface Command {
+export default interface ICommand {
   name: string;
   description: string;
   aliases?: string[];

@@ -9,3 +9,8 @@ objects
 
 # ignore yarn.lock
 yarn.lock
+
+# ignore .mp3 files
+*.mp3
+
+dist/

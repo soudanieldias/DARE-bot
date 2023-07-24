@@ -1,57 +1,55 @@
 import { Client, Message } from "discord.js";
-import ytdl from 'ytdl-core-discord';''
-import App from '../../App';
-import SoundHandler from "../../handler/SoundHandler";
+import { app } from "../..";
 
 module.exports = {
-	name: 'music',
-	description: 'Music commands [Music]',
-	category: 'music',
-	execute: async (_client:Client, message:Message, args:Array<string>) => {
-    try {
-      const voiceChannel = message.member?.voice.channelId;
-      const guildId = message.guildId;
-      const sourceURL = ytdl.validateURL(args[1]);
-      
-      if (!voiceChannel) return message.reply({ content: 'Connect to a voice Channel first.' });
-      
-      const connectionParams = {
-        channelId: `${voiceChannel}`,
-        guildId: guildId!,
-        adapterCreator: message.guild?.voiceAdapterCreator,
-      };
-      
-      switch (args[0]) {
-        case 'play':
-          // const song_info = await ytdl.getInfo(args[1]);
-          if(!sourceURL) return message.reply('ERROR: Please provide a valid URL');
-          const stream = await ytdl(args[1], { filter: 'audioonly' });
-          SoundHandler.playSound(stream, connectionParams, false);
-          // message.delete();
-          break;
-        case 'pause':
-          console.log('Pausando algo...');
-          message.reply('Pausando algo...');
-          break;
-        case 'stop':
-          console.log('Parando algo...');
-          message.reply('Parando algo...');
-          SoundHandler.playSound('http://youtube.com', connectionParams, true);
-          break;
-        case 'skip':
-          console.log('Avançando algo...');
-          message.reply('Avançando algo...');
-          break;
-        case 'loop':
-          App.loopMusic = !App.loopMusic;
-          message.reply(`Loop: ${App.loopMusic}`);
-          break;
-        default:
-          message.reply('Sem argumentos passados. Ignorando comando...');
-          break;
-      }
-    } catch (error) {
-      message.reply(`${error}`);
+  name: 'music',
+  description: 'Player de Música',
+  category: 'music',
+  execute: async (client:Client, message:Message, args:Array<string>) => {
+    const voiceChannel = message.member?.voice.channelId;
+    const guildId = message.guildId;
+    const guildQueue = app.player.getQueue(`${guildId}`);
+    const queue = app.player.createQueue(`${guildId}`);
+    
+    if (!voiceChannel) return message.reply('Conecte a um canal de voz para usar o comando.');
+
+    switch (args[0]) {
+      case 'play':
+        await queue.join(voiceChannel);
+        if (!args[1]) return;
+        const song = await queue.play(args[1]).catch((err) => {
+          console.log(err);
+          if (!guildQueue) queue.stop();
+        });
+        break;
+      case 'skip':
+        if (!queue || !guildQueue) return;
+        queue.skip();
+        break;
+      case 'stop':
+        queue.stop();
+        break;
+      case 'volume':
+        if (!args[1] || !guildQueue) return;
+        if(0 > Number(args[1]) || Number(args[1]) > 100) return;
+        queue.setVolume(Number(args[1]));
+        break;
+      case 'np':
+        if(!guildQueue) return;
+        const progressBar = guildQueue!.createProgressBar().prettier;
+        return message.reply(`**Tocando agora:**\n***${guildQueue.nowPlaying}\n${progressBar}***`);
+      case 'queue':
+        const queueList = queue.songs;
+        message
+          .reply(`**Playlist Atual:**\n${queueList
+            .map((music, index) =>
+            (`***${index+1}> ${music.author} - ${music.name} | ${music.duration}***\n`)).join('')}`);
+        break;
+      default:
+        message
+          .reply(`Comando não identificado! Tente:
+          ${process.env.BOT_PREFIX}play <NOME/LINK>`);
+        break;
     }
   }
 };

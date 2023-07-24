@@ -1,7 +1,8 @@
-import { Client, Collection, Intents, TextChannel } from 'discord.js';
-import { DatabaseConnection, SetActivity, Interactions } from './events';
+import { PlayerSubscription } from '@discordjs/voice';
+import { Client, Collection, Intents } from 'discord.js';
+import { Player } from 'discord-music-player';
+import { LoadCommands, OnInteraction, OnMessageCreate, OnReady, SetActivity } from './events';
 import { ICommand } from './interfaces';
-import { CommandHandler } from './handler';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,6 +20,10 @@ export default class App {
   });
 
   private TOKEN = process.env.BOT_TOKEN;
+
+  public static commands = new Collection<String, ICommand>;
+
+  public player = new Player(this.client, { leaveOnEmpty: false });
 
   private WELCOME_CHANNEL = process.env.WELCOME_CHANNEL;
 
@@ -52,8 +57,13 @@ export default class App {
       console.log('------------------------------');
     });
 
-    this.client.login(this.TOKEN);
+  constructor () {
+    SetActivity.default(this.client); // Configurações de Atividade/Status do BOT
+    OnInteraction(this.client);
+    LoadCommands(this.client);
+    OnMessageCreate(this.client);
   }
+
 
   private joinHandler () {
     this.client.on('guildMemberAdd', async (user) => {

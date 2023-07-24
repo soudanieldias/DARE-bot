@@ -1,27 +1,12 @@
-import { Client, Message, MessageActionRow, MessageButton, TextChannel } from "discord.js";
-import SoundHandler from "../../handler/SoundHandler";
-import fs from 'fs/promises';
-
-function sliceArray(fileObjects:Array<MessageButton>, max:number) {
-  return fileObjects.reduce((acc:any, item, index:number) => {
-    const group = Math.floor(index / max);
-    acc[group] = [...(acc[group] || []), item];
-    return acc;
-  }, []);
-}
-
-async function generateButtonsData() {
-  const audioFiles = await fs.readdir('./src/audios/');
-  const fileObjects = audioFiles
-    .map((audio) => ( new MessageButton().setCustomId(audio.slice(0, -4)).setLabel(audio.slice(0, -4)).setStyle('PRIMARY')));
-  return fileObjects;
-}
+import { Client, Message, MessageActionRow, TextChannel } from 'discord.js';
+import { SoundHandler } from '../../handlers';
+import { sliceArray, generateButtonsData } from '../../helpers';
 
 module.exports = {
-	name: 'soundpad',
-	description: 'send a list of available Bot short songs [Music]',
-	category: 'music',
-	execute: async (client:Client, message:Message, args:Array<string>) => {
+  name: 'soundpad',
+  description: 'Retorna uma lista de Botões de áudio para usar no canal de voz',
+  category: 'Music',
+  execute: async (client:Client, message:Message, args:Array<string>) => {
     try {
       const voiceChannel = message.member?.voice.channelId;
       const messageChannel = client.channels.cache.get(message.channelId);
@@ -32,7 +17,7 @@ module.exports = {
 
       if (!voiceChannel) {
         message.channel
-          .send({ content: `<@!${message.member?.id}> You must be in a voice Channel first to perform this command.` });
+          .send(`<@${message.member?.id}> Você precisa estar em um canal de voz para executar o comando`);
         return;
       }
 
@@ -41,11 +26,12 @@ module.exports = {
         const allRows:Array<MessageActionRow> = [];
 
         slicedResult
-          .forEach((result:Array<MessageActionRow>) => (allRows
+          .forEach((result:Array<MessageActionRow>) => ( allRows
             .push(new MessageActionRow().addComponents(result))));
 
         return allRows.forEach((rowData:MessageActionRow, index) => {
-          (messageChannel as TextChannel).send({ content: `Lista de Áudios: ${index + 1}`, components: [rowData] });
+          (messageChannel as TextChannel)
+            .send({ content: `Lista de Áudios: ${index + 1}`, components: [rowData] });
         });
       }
 
@@ -59,7 +45,7 @@ module.exports = {
         SoundHandler.playSound(`./src/audios/${args[0]}.mp3`, connectionParams, false);
       }
     } catch (error) {
-      console.error(error);
+      console.error(`[Erro]: ${error}`);
     }
   }
-};
+}

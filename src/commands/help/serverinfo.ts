@@ -2,7 +2,7 @@ import { Client, Message, MessageEmbed } from "discord.js";
 
 module.exports = {
 	name: 'serverinfo',
-	description: 'Shows a EMBED with Discord server info',
+	description: 'Mostra um Embed com informações sobre a Guild',
 	category: 'help',
 	execute: async (client:Client, message:Message, _args:Array<string>) => {
     const guildMembers = await message.guild?.members.fetch();
