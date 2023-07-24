@@ -5,8 +5,7 @@ export default class DatabaseConnection {
     try {
       const MONGO_URI = process.env.MONGO_URI;
       const USE_DB = process.env.USE_DB;
-      console.log(Boolean(process.env.USE_DB));
-      
+
       if(!MONGO_URI?.length || Boolean(process.env.USE_DB) === false) {
         console.log('[DataBase] MongoDB Desabilitado');
         return;

@@ -42,7 +42,8 @@ module.exports = {
       return interaction.editReply('Mensagem enviada com Sucesso!');
 
     } catch (error) {
-      console.error("error");
+      console.error("[Reply] Ocorreu um erro no Reply");
+      return interaction.reply('Ocorreu um erro ao enviar a mensagem! Mensagem não encontrada.');
     }
   }
 };

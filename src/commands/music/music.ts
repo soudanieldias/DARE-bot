@@ -18,16 +18,16 @@ module.exports = {
     ))
     .addStringOption(query => (
       query.setName('query')
-      .setDescription('query do Stream a ser Tocado!')
-      .setRequired(false)
-    ))
-    .addIntegerOption(quantity => (
-      quantity.setName("volume")
-      .setDescription("Digite o Volume da Música (Um número entre 1-100).")
-      .setMinValue(1)
-      .setMaxValue(100)
+      .setDescription('query do Stream/Volume a ser setado!')
       .setRequired(false)
     )),
+    // .addIntegerOption(quantity => (
+      // quantity.setName("volume")
+      // .setDescription("Digite o Volume da Música (Um número entre 1-100).")
+      // .setMinValue(1)
+      // .setMaxValue(100)
+      // .setRequired(false)
+    // )),
   category: 'music',
   execute: async (_client:Client, interaction:Interaction) => {
     try {
@@ -43,8 +43,8 @@ module.exports = {
         if (interaction.isCommand())
         {
           var eventType = interaction.options.get('event')?.value;
-          var paramquery = interaction.options.get('query')?.value;
-          var sourceVolume = interaction.options.get('volume')?.value;
+          var paramQuery = interaction.options.get('query')?.value;
+          // var sourceVolume = interaction.options.get('volume')?.value;
         }
 
         if (!voiceChannel) {
@@ -56,7 +56,7 @@ module.exports = {
           case 'play':
             await interaction.reply(`Adicionando música a fila...`)
             await queue.join(voiceChannel);
-            await queue.play(`${paramquery}`)
+            await queue.play(`${paramQuery}`)
               .catch((err) => {
                 console.log(err);
                 if (!guildQueue) queue.stop();
@@ -73,8 +73,9 @@ module.exports = {
             break;
 
           case 'volume':
-            queue.setVolume(Number(sourceVolume));
-            await interaction.reply('Alterando o volume para ' + sourceVolume);
+            if (!queue || !guildQueue) return;
+            queue.setVolume(Number(paramQuery));
+            await interaction.reply('Alterando o volume para ' + paramQuery);
             break;
 
           case 'np':
