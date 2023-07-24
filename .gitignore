@@ -9,3 +9,10 @@ objects
 
 # ignore yarn.lock
 yarn.lock
+
+# ignore .mp3 files
+*.mp3
+
+# ignore Specific Directories
+dist/
+**/reports/*/

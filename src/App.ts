@@ -1,40 +1,49 @@
-import { Client, Intents } from 'discord.js';
+import { Client, Collection, GatewayIntentBits /*, Routes, REST */ } from 'discord.js';
+import { Player } from 'discord-music-player';
+import {
+  DBConnect,
+  LoadCommands,
+  // OnError,
+  OnInteraction,
+  OnMessageCreate,
+  OnReady,
+  SetActivity
+} from './events';
+import { ICommand } from './interfaces';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 export default class App {
-  private client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
-
-  private BOT_PREFIX = process.env.BOT_PREFIX || '//';
+  private client = new Client({
+    intents: [
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.MessageContent,
+      GatewayIntentBits.GuildMembers,
+      GatewayIntentBits.GuildVoiceStates,
+      GatewayIntentBits.DirectMessages,
+      GatewayIntentBits.GuildIntegrations,
+    ],
+  });
 
   private TOKEN = process.env.BOT_TOKEN;
 
+  public static commands = new Collection<String, ICommand>;
+  public static slashCommands = new Collection<String, ICommand>;
+
+  public player = new Player(this.client, { leaveOnEmpty: false }); // discord-music-player
+
   constructor () {
-    this.setActivity();
+    SetActivity.default(this.client); // Configurações de Atividade/Status do BOT
+    OnInteraction(this.client);
+    LoadCommands(this.client);
+    OnMessageCreate(this.client);
+    // OnError(this.client);
+    DBConnect.databaseHandler();
   }
 
-  public start () { // Configurações de Inicialização & Autenticação do BOT
-    this.client.on('ready', () => {
-      console.log('Bot Online');
-      console.log('------------------------------');
-      console.log(`Pronto para o Trabalho! Online para ${this.client.users.cache.size} Usuários.`);
-      console.log(`Operando em ${this.client.guilds.cache.size} Servidores`);
-      console.log('------------------------------');
-      console.log('Lista de Guilds:');
-      console.log(this.client.guilds.cache.map((guild) => guild.name).join('\n'));
-      console.log('------------------------------');
-    });
-
-    this.client.login(this.TOKEN);
-  }
-
-  private setActivity () { // Configurações de Atividade/Status do BOT
-    this.client.once('ready', () => {
-      this.client.user?.setActivity(
-        'BOT Online',
-        { type: 'STREAMING', url: 'https://www.diasitservices.com.br/dare-bot'}
-      );
-    });
+  public start () {
+    OnReady(this.client, this.TOKEN); // Configurações de Inicialização & Auth do BOT
   }
 }

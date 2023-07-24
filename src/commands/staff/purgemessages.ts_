@@ -1,0 +1,23 @@
+import { Client, Message, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('')
+    .setDescription(''),
+	name: 'purgemessages',
+	description: 'Purges a \'n\' amount of sended messages from specified user [STAFF]',
+	category: 'staff',
+	execute: async (_client:Client, message:Message, args:Array<string>) => {
+    try {
+      const hasAdminRole = message.member!.permissions.has([PermissionFlagsBits.Administrator]);
+      const USER_ID = Number(args[0]);
+      const MESSAGES_TO_DELETE = Number(args[1]);
+  
+      if (!hasAdminRole) return message.reply('ERRO: Não Autorizado!!!');
+  
+    } catch (error) {
+      console.error(error);
+      message.reply({ content: `${error}` })
+    }
+  }
+};

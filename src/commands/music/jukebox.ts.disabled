@@ -1,0 +1,87 @@
+import { Client, CommandInteraction, SlashCommandBuilder } from "discord.js";
+// import ytdl from 'ytdl-core-discord';
+import { SoundHandler } from '../../handlers';
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('jukebox')
+    .setDescription('Toca uma música da Jukebox via YouTube, Spotify ou link')
+    .addStringOption(source => (
+      source.setName('source')
+      .setDescription('Tipo de source que você irá tocar no Jukebox')
+      // .addChoices({ name: 'youTube', value: 'youtube' })
+      .addChoices({ name: 'file', value: 'file' })
+      .addChoices({ name: 'local', value: 'local' })
+      .addChoices({ name: 'spotify', value: 'spotify' })
+      .setRequired(false)
+    ))
+    .addStringOption(url => (
+      url.setName('url')
+      .setDescription('Url do Stream a ser Tocado!')
+      .setRequired(false)
+    ))
+    .addBooleanOption(stop => (
+      stop.setName('stop')
+      .setDescription('Deseja parar a Música?')
+      .setRequired(false)
+    )),
+  category: 'music',
+  execute: async (_client:Client, interaction:CommandInteraction, args:Array<string>) => {
+    if (interaction.isRepliable()) {
+      const member = interaction.guild?.members.cache.get(interaction.member!.user.id);
+      const voiceChannel = member?.voice.channel?.id;
+      const source = interaction.options.get('source')?.value;
+      const paramUrl = interaction.options.get('url')?.value;
+      const stopStream = interaction.options.get('stop')?.value;
+
+      if (!voiceChannel) return interaction.reply('Conecte a um canal de voz para usar o comando.');
+      
+      const adapterCreator = interaction.guild?.voiceAdapterCreator;
+
+      const connectionParams = {
+        channelId: `${voiceChannel}`,
+        guildId: interaction.guildId!,
+        adapterCreator: adapterCreator!,
+      };
+
+      if (stopStream) {
+        SoundHandler.playSound('', connectionParams, true);
+        return await interaction.reply(`Parando o Jukebox!`)
+      }
+
+      switch(source) {
+        // case 'youtube':
+        //   await interaction.reply('[INFO]: Não Implementado!');
+        //   let stream = await ytdl(`${paramUrl}`, { filter: 'audioonly' });
+        //   SoundHandler.playSound(stream, connectionParams, false);
+        //   break;
+
+        case 'file':
+          SoundHandler.playSound(`${paramUrl}`, connectionParams, false);
+          await interaction.reply(`Tocando da Source ${paramUrl}!`)
+          break;
+
+        case 'local':
+          await interaction.reply('[INFO]: Não Implementado!');
+          break;
+
+        case 'spotify':
+          await interaction.reply('[INFO]: Não Implementado!');
+          break;
+        
+        default:
+          await interaction.reply('Nenhum argumento válido foi passado para o Comando Jukebox');
+          break;
+      }
+      // switch (args[0]) {
+      //   case 'youtube':
+      //     stream = await ytdl(args[1], { filter: 'audioonly' });
+      //     SoundHandler.playSound(stream, connectionParams, false);
+      //     break;
+      //   case 'file':
+      //     stream = args[1];
+      //     SoundHandler.playSound(stream, connectionParams, false);
+      //     break;
+    }
+  }
+}
