@@ -17,46 +17,55 @@ async function generateButtonsData() {
   return fileObjects;
 }
 
-module.exports.run = async (client:Client, message:Message, args:Array<string>) => {
-  const voiceChannel = message.member?.voice.channelId;
-  const messageChannel = client.channels.cache.get(message.channelId);
-  const guildId = message.guildId;
-  const adapterCreator = message.guild?.voiceAdapterCreator;
+module.exports = {
+	name: 'soundpad',
+	description: 'send a list of available Bot short songs',
+	category: 'audio',
+	execute: async (client:Client, message:Message, args:Array<string>) => {
+    try {
+      const voiceChannel = message.member?.voice.channelId;
+      const messageChannel = client.channels.cache.get(message.channelId);
+      const guildId = message.guildId;
+      const adapterCreator = message.guild?.voiceAdapterCreator;
 
-  const fileObjects = await generateButtonsData();
+      const fileObjects = await generateButtonsData();
 
-  if (!voiceChannel) {
-    message.channel
-      .send({ content: 'You must be in a voice Channel first to perform this command.' });
-    return;
-  }
+      if (!voiceChannel) {
+        message.channel
+          .send({ content: 'You must be in a voice Channel first to perform this command.' });
+        return;
+      }
 
-  if (!args[0] && voiceChannel) {
-    const slicedResult = await sliceArray(fileObjects, 5);
-    const allRows:Array<MessageActionRow> = [];
+      if (!args[0] && voiceChannel) {
+        const slicedResult = await sliceArray(fileObjects, 5);
+        const allRows:Array<MessageActionRow> = [];
 
-    slicedResult
-      .forEach((result:Array<MessageActionRow>) => (allRows
-        .push(new MessageActionRow().addComponents(result))));
+        slicedResult
+          .forEach((result:Array<MessageActionRow>) => (allRows
+            .push(new MessageActionRow().addComponents(result))));
 
-    return allRows.forEach((rowData:MessageActionRow, index) => {
-      (messageChannel as TextChannel).send({ content: `Lista de Áudios: ${index + 1}`, components: [rowData] });
-    });
-  }
+        return allRows.forEach((rowData:MessageActionRow, index) => {
+          (messageChannel as TextChannel).send({ content: `Lista de Áudios: ${index + 1}`, components: [rowData] });
+        });
+      }
 
-  if (voiceChannel) {
-    const player = createAudioPlayer();
+      if (voiceChannel) {
+        const player = createAudioPlayer();
 
-    const resource = createAudioResource(`./src/audios/${args[0]}.mp3`);
+        const resource = createAudioResource(`./src/audios/${args[0]}.mp3`);
 
-    const connection = joinVoiceChannel({
-      channelId: `${voiceChannel}`,
-      guildId: guildId!,
-      adapterCreator: adapterCreator!,
-    });
-    
-    player.play(resource);
+        const connection = joinVoiceChannel({
+          channelId: `${voiceChannel}`,
+          guildId: guildId!,
+          adapterCreator: adapterCreator!,
+        });
+        
+        player.play(resource);
 
-    connection.subscribe(player);
+        connection.subscribe(player);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 };

@@ -22,12 +22,15 @@ async function getRandomPic(_client:Client, message:Message) {
   }
 }
 
-module.exports.run = async (client:Client, message:Message, args:Array<string> ) => {
-  try {
-    getRandomPic(client, message);
-
-  } catch (error) {
-    console.error("error");
-
+module.exports = {
+	name: 'randompic',
+	description: 'Gets a arandom Pic from List',
+	category: 'test',
+	execute: async (client:Client, message:Message, _args:Array<string>) => {
+    try {
+      getRandomPic(client, message);
+    } catch (error) {
+      console.error("error");
+    }
   }
-}
+};
