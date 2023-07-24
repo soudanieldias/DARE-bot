@@ -7,14 +7,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default class App {
-  private client = new Client({ intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MEMBERS,
-    Intents.FLAGS.GUILD_VOICE_STATES,
-  ] });
-
-  private BOT_PREFIX = process.env.BOT_PREFIX || '//';
+  private client = new Client({
+    partials: ["CHANNEL"],
+    intents: [
+      Intents.FLAGS.GUILDS,
+      Intents.FLAGS.GUILD_MESSAGES,
+      Intents.FLAGS.GUILD_MEMBERS,
+      Intents.FLAGS.GUILD_VOICE_STATES,
+      Intents.FLAGS.DIRECT_MESSAGES,
+    ],
+  });
 
   private TOKEN = process.env.BOT_TOKEN;
 
@@ -34,6 +36,7 @@ export default class App {
     CommandHandler.commandWatcher(this.client);
     this.joinHandler();
     this.voiceHandler();
+    this.errorWarnHandler();
   }
 
   public start () { // Configurações de Inicialização & Autenticação do BOT
@@ -77,5 +80,16 @@ export default class App {
         console.log('User Left Channel');
       }
     });
+  }
+
+  private errorWarnHandler() {
+    this.client.on('error', (error) => {
+      console.error(error);
+    });
+
+    this.client.on('warn', (warn) => {
+      console.warn(warn);
+    })
+
   }
 }

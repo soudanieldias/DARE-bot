@@ -9,6 +9,7 @@ export default class CommandHandler {
   public static async loadCommands(client:Client) {
     const commandFiles = glob.sync("./src/commands/**/*.ts");
     try {
+      console.log('[COMANDOS] Carregando Módulo de Comandos');
       for await (const file of commandFiles) {
         const command = require(`../../${file}`);
   
@@ -27,6 +28,7 @@ export default class CommandHandler {
         App.commands.set(command.name, command);
         // client.application!.commands.set(command.name, command);
       }
+      console.log('[COMANDOS] Comandos Carregados com Sucesso!');
     } catch (error) {
       console.error(error);
     }
@@ -34,12 +36,19 @@ export default class CommandHandler {
 
   public static async commandWatcher(client:Client) {
     const BOT_PREFIX = process.env.BOT_PREFIX || '//';
-
     client.on('messageCreate', async (message) => {
+      if(message.channel.type === 'DM' && !message.author.bot) {
+        console.log(`**********
+        Mensagem recebida via DM:
+        AUTOR: ${message.author.username}
+        CONTEÚDO: ${message.content}
+        **********
+        `);
+      }
       if ( 
         message.author.bot
         || !message.guild
-        || message.channel.type === 'DM'
+        // || message.channel.type === 'DM'
         || !message.content.startsWith(BOT_PREFIX)
         || message.content.startsWith(`<@!${client.user!.id}`)
         || message.content.startsWith(`<@${client.user!.id}`)
@@ -63,8 +72,6 @@ export default class CommandHandler {
 
       } catch (error) {
         console.error(error);
-        // message.channel.send('Erro: Comando Não Encontrado!');
-        // console.error(`Erro ao Digitar o Comando: '${command}' \n[DEPURAÇÃO] Erro Retornado: '${err}'`); // [DEBUG]
       }
     });
   }
