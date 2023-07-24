@@ -1,4 +1,4 @@
-import { Client, Guild, GuildMember, Message, MessageEmbed } from "discord.js";
+import { Client, GuildMember, Message } from "discord.js";
 
 module.exports.run = async (client:Client, message:Message) => {
   try {
@@ -6,8 +6,7 @@ module.exports.run = async (client:Client, message:Message) => {
     const guild = client.guilds.resolve(message.guildId!);
 
     if(guild) {
-      const guildMembers = ( await guild.members.fetch())
-        .map((member) => member)
+      const guildMembers = (await guild.members.fetch())
         .sort((a:GuildMember, b:GuildMember) => {
           if (a.displayName! > b.displayName!) return 1;
           if (a.displayName! < b.displayName!) return -1;
@@ -17,27 +16,17 @@ module.exports.run = async (client:Client, message:Message) => {
 
       const membersData = guildMembers
         .filter((member) => !member.user.bot)
-        .map((member) => ({ name: member.displayName + ':', value: `<@!${member.id}>` }))
-
-      // const botsData = guildMembers
-      //   .filter((member) => member.user.bot )
-      //   .map((member) => ({ name: member.displayName, value: `<@${member.id}>` }));
+        .map((member) => ({ name: member.displayName + ':', value: `<@!${member.id}>` }));
 
       const usersEmbed = {
         title: 'Membros no Servidor:',
         fields: [ ...membersData ],
       };
 
-      // const botsEmbed = {
-      //   title: 'Bots no Servidor:',
-      //   fields: [ ...botsData ],
-      // }
-
-      message.channel.send({ embeds: [usersEmbed/*, botsEmbed*/] });
+      message.channel.send({ embeds: [usersEmbed] });
     }
   } catch (error) {
     console.error(error);
     message.channel.send({ content: 'Erro: Ocorreu um erro ao executar o Comando.'});
   }
-
 };
