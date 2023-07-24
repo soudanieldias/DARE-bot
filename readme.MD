@@ -33,4 +33,4 @@
 - Sistema de Autorole
 - Sistema de Áudio melhorado com novas fontes
 - Sistema de Eventos Agendados por Data e com Recorrência
-- Implementação de um Banco de Dados
+- Comandos 100% Customizáveis;

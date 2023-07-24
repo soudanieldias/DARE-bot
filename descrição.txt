@@ -1,0 +1,15 @@
+O DARE-Bot é um Bot interativo e de gerenciamento da comunidade da DARE.
+Prefixo do BOT: '//'
+Atualmente, possui os seguintes comandos:
+
+COMANDOS PÚBLICOS:
+-> soundpad (Mostra uma lista de Botões de Som para usar com amigos na Call do Discord)
+-> music <play/stop> <YOUTUBE_URL> (Toca músicas do Youtube)
+-> Ping (Checa a conexão do Bot com o Servidor do Discord)
+-> randompic (Enviar no chat uma imagem aleatória)
+-> serverinfo (Gera um EMBED contendo informações básicas sobre o servidor)
+
+COMANDOS ADMINISTRATIVOS:
+-> say <ChannelID> <Message> (Envia uma mensagem em formato texto para o canal passado)
+-> clearmessages <ChannelID> <Quantidade> (Limpa as mensagens do Canal Limitado de 1 à 100 Mensagens) 
+-> purgemessages <UserID> <Quantity> (Limpa as mensagens de um Usuário específico por ID) [EM IMPLEMENTAÇÃO]
