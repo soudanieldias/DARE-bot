@@ -2,9 +2,8 @@ import { Client, Message, TextChannel } from "discord.js";
 
 module.exports.run = async (client:Client, message:Message, args:Array<string> ) => {
   try {
-    const ADMS_ROLE_PREFIX = 'Diretoria de';
-    const userRoles = message.member?.roles.cache.map((role) => role.name );
-    const authorizeSay = userRoles?.some((role) => role.startsWith(ADMS_ROLE_PREFIX));
+    const userPerms = message.member!.guild.me?.permissions.toArray();
+    const hasAdminRole = userPerms?.some((role) => (role == "ADMINISTRATOR"));
     const CHANNEL_ID = args[0];
     const MESSAGE_TO_SEND = args.slice(1).join(' ');
 
@@ -12,7 +11,10 @@ module.exports.run = async (client:Client, message:Message, args:Array<string> )
 
     if (!channel) message.reply('ERRO: Canal não encontrado!');
 
-    if (!authorizeSay) message.reply('ERRO: Não Autorizado!!!');
+    if (!hasAdminRole) {
+      message.reply('ERRO: Não Autorizado!!!');
+      return;
+    }
 
     if (channel) {
       (channel as TextChannel).send(`${MESSAGE_TO_SEND}`);

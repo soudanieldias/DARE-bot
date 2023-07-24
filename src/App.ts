@@ -1,4 +1,4 @@
-import { Channel, Client, Intents, Message, TextChannel } from 'discord.js';
+import { Client, Intents, TextChannel } from 'discord.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,6 +19,8 @@ export default class App {
 
   private WELCOME_MESSAGE = process.env.WELCOME_MESSAGE;
 
+  public static loopMusic:Boolean = false;
+
   constructor () {
     this.setActivity();
     this.commandHandler();
@@ -30,6 +32,7 @@ export default class App {
   public start () { // Configurações de Inicialização & Autenticação do BOT
     this.client.on('ready', () => {
       console.log('Bot Online');
+      console.log('Username: ', this.client.user?.tag);
       console.log('------------------------------');
       console.log(`Pronto para o Trabalho! Online para ${this.client.users.cache.size} Usuários.`);
       console.log(`Operando em ${this.client.guilds.cache.size} Servidores`);
@@ -77,7 +80,7 @@ export default class App {
 
       } catch (err) {
         message.channel.send('Erro: Comando Não Encontrado!');
-        // console.error(`Erro ao Digitar o Comando: '${command}' \n[DEPURAÇÃO] Erro Retornado: '${err}'`); [DEBUG]
+        console.error(`Erro ao Digitar o Comando: '${command}' \n[DEPURAÇÃO] Erro Retornado: '${err}'`); // [DEBUG]
       }
     });
   }
@@ -100,8 +103,8 @@ export default class App {
       if (!interaction.isButton()) return;
 
       try {
-        const commandFile = require(`./commands/play.ts`);
-        delete require.cache[require.resolve(`./commands/play.ts`)];
+        const commandFile = require(`./commands/soundpad.ts`);
+        delete require.cache[require.resolve(`./commands/soundpad.ts`)];
         commandFile.run(this.client, interaction, [interaction.customId]);
         interaction.reply({ content: `Tocando: ${interaction.customId}`, ephemeral: false });
         interaction.deleteReply();
