@@ -1,6 +1,6 @@
 import { ActivityType, Client } from 'discord.js';
 
-export default class setActivity {
+export default class SetActivity {
   public static default(client:Client) {
     client.once('ready', () => {
       console.log('[Activity] Inicializando Activity do BOT.');
